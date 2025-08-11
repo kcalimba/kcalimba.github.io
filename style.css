@@ -1,73 +1,161 @@
-/* Base styles */
-body {
-    font-family: system-ui, sans-serif;
-    margin: 0;
-    background: #f7f7fa;
-    color: #222;
-    line-height: 1.6;
+/* ===== Theme & base ===== */
+:root{
+    --bg:#0b0c0f;           /* dark bg (auto swapped in light mode) */
+    --surface:#12141a;      /* card background */
+    --text:#e7e9ee;         /* primary text */
+    --muted:#a6adbb;        /* secondary text */
+    --accent:#0ea5e9;       /* links/buttons */
+    --border:rgba(255,255,255,.10);
+    --ring:rgba(14,165,233,.35);
+  
+    --radius:16px;
+    --shadow:0 6px 20px rgba(0,0,0,.20);
+  
+    /* fluid sizing */
+    --container:clamp(320px, 92vw, 1120px);
+    --fs-body:clamp(15px, 1.4vw, 17px);
+    --fs-h1:clamp(26px, 5vw, 44px);
+    --fs-h2:clamp(18px, 2.4vw, 24px);
   }
   
-  header, footer {
-    background: #fff;
-    padding: 1rem;
-    border-bottom: 1px solid #ddd;
+  @media (prefers-color-scheme: light){
+    :root{
+      --bg:#ffffff;
+      --surface:#f7f8fb;
+      --text:#0b0c0f;
+      --muted:#475569;
+      --border:rgba(0,0,0,.08);
+      --ring:#bae6fd;
+    }
   }
   
-  header .brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  img{max-width:100%;height:auto;display:block}
+  
+  body{
+    font:400 var(--fs-body)/1.65 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
   }
   
-  header img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
+  /* Center main content nicely on all screens */
+  main{
+    width:var(--container);
+    margin:0 auto;
+    padding:24px 18px;
   }
   
-  nav a {
-    margin: 0 8px;
-    text-decoration: none;
-    color: #222;
-    font-weight: 600;
+  section{margin:28px 0}
+  h1{font-size:var(--fs-h1); line-height:1.15; margin:8px 0 10px}
+  h2{font-size:var(--fs-h2); margin:0 0 12px}
+  a{color:var(--accent); text-decoration:none}
+  a:hover{text-decoration:underline}
+  
+  /* ===== Header & nav (mobile-first) ===== */
+  header{
+    width:100%;
+    background:color-mix(in oklab, var(--bg) 92%, transparent);
+    backdrop-filter:saturate(1.1) blur(6px);
+    border-bottom:1px solid var(--border);
+    padding:12px 18px;
   }
   
-  nav a:hover {
-    color: #0ea5e9;
+  header{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:12px;
+    justify-content:space-between;
   }
   
-  main {
-    max-width: 1100px;
-    margin: auto;
-    padding: 20px;
+  header .brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    width:100%;
   }
   
-  section {
-    margin-bottom: 2rem;
+  header img{
+    width:56px;height:56px;object-fit:cover;border-radius:999px;background:#ccc;
   }
   
-  h1, h2, h3 {
-    margin-top: 0;
+  header nav{
+    width:100%;
+    margin-top:6px;
   }
   
-  .grid {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  header nav a{
+    margin-right:14px;
+    font-weight:600;
+    color:var(--text);
   }
   
-  .card, .item {
-    background: #fff;
-    padding: 1rem;
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0,0,0,.1);
+  header nav a:hover{color:var(--accent); text-decoration:none}
+  
+  /* On wider screens, keep nav in one line to the right */
+  @media (min-width: 760px){
+    header .brand{width:auto}
+    header nav{width:auto; margin-top:0}
   }
   
-  footer {
-    text-align: center;
-    color: #666;
-    font-size: 14px;
-    border-top: 1px solid #ddd;
-    margin-top: 2rem;
-    padding-top: 1rem;
-  }  
+  /* ===== Cards, grid, reusable bits ===== */
+  .grid{
+    display:grid;
+    gap:16px;
+    /* auto-fit makes cards flow from 1 column on phones to many on desktops */
+    grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+  }
+  
+  .card,.item{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:16px;
+    box-shadow:var(--shadow);
+    transition:transform .08s ease, border-color .15s ease;
+  }
+  
+  .card:hover,.item:hover{transform:translateY(-2px); border-color:var(--ring)}
+  
+  .card h3{margin:0 0 8px; font-size:18px}
+  .card p{margin:0; color:var(--muted)}
+  
+  ul.clean{list-style:none; padding:0; margin:8px 0 0}
+  ul.clean li{margin:6px 0}
+  
+  /* Utilities */
+  .pill{
+    display:inline-block; border:1px solid var(--ring); color:var(--accent);
+    padding:6px 10px; border-radius:999px; font-size:14px
+  }
+  
+  .btn{
+    display:inline-block; background:var(--accent); color:#fff;
+    padding:10px 14px; border-radius:12px; font-weight:600; box-shadow:var(--shadow)
+  }
+  .btn:hover{text-decoration:none; filter:brightness(1.05)}
+  .row{display:flex; flex-wrap:wrap; gap:12px; align-items:center}
+  
+  /* Make images used as thumbnails look tidy */
+  .thumb{aspect-ratio:16/9; overflow:hidden; border-radius:14px; background:#222; margin-bottom:10px}
+  
+  /* Footer */
+  footer{
+    width:var(--container);
+    margin:24px auto 40px;
+    padding:0 18px;
+    color:var(--muted);
+    font-size:14px;
+    text-align:center;
+    border-top:1px solid var(--border);
+    padding-top:16px;
+  }
+  
+  /* Accessibility: respect reduced motion */
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important; scroll-behavior:auto !important}
+  }
+  
