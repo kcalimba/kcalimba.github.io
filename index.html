@@ -1,12 +1,269 @@
 <!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>My Portfolio</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-  </head>
-  <body>
-    <h1>Hello, I’m [Your Name]!</h1>
-    <p>Welcome to my portfolio website.</p>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Your Name – Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Projects, experience, and contact for Your Name." />
+  <meta name="theme-color" content="#0ea5e9" />
+  <link rel="icon" href="favicon.ico" />
+
+  <style>
+    /* ===== Base / Theme ===== */
+    :root{
+      --bg:#0b0c0f; --surface:#12141a; --text:#e7e9ee; --muted:#a6adbb;
+      --accent:#0ea5e9; --ring:rgba(14,165,233,.25); --border:rgba(255,255,255,.08);
+      --radius:18px; --shadow:0 6px 20px rgba(0,0,0,.25);
+      --container:clamp(320px, 92vw, 1120px);
+      --fs-hero:clamp(26px, 5vw, 44px);
+      --fs-h2:clamp(18px, 2.4vw, 24px);
+      --fs-body:clamp(15px, 1.4vw, 17px);
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg:#ffffff; --surface:#f7f8fb; --text:#0b0c0f; --muted:#475569;
+        --accent:#0ea5e9; --ring:#bae6fd; --border:rgba(0,0,0,.08);
+      }
+    }
+
+    /* ===== Reset / Typography ===== */
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font:400 var(--fs-body)/1.6 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+      background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+    }
+    img{max-width:100%; height:auto; display:block}
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    .container{width:var(--container); margin:0 auto; padding:20px}
+
+    /* ===== Header / Nav ===== */
+    header{
+      position:sticky; top:0; z-index:50; background:color-mix(in oklab, var(--bg) 92%, transparent);
+      backdrop-filter:saturate(1.2) blur(6px); border-bottom:1px solid var(--border);
+    }
+    .nav-wrap{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 0}
+    .brand{display:flex; align-items:center; gap:12px}
+    .avatar{width:44px; height:44px; border-radius:999px; object-fit:cover; background:#ccc}
+    .name{font-weight:700}
+    .nav-links{display:flex; gap:16px}
+    .nav-links a{color:var(--text); font-weight:600}
+    .nav-links a:hover{color:var(--accent); text-decoration:none}
+
+    /* Mobile menu */
+    .menu-btn{display:inline-flex; align-items:center; justify-content:center; width:42px; height:42px;
+      border:1px solid var(--border); border-radius:12px; background:var(--surface); color:var(--text)}
+    .menu-btn svg{width:22px; height:22px}
+    #menu{display:none}
+    @media (min-width: 760px){
+      .menu-btn{display:none}
+      #menu{display:block !important}
+    }
+
+    /* ===== Sections ===== */
+    section{padding:28px 0}
+    h1{font-size:var(--fs-hero); line-height:1.15; margin:10px 0 8px}
+    h2{font-size:var(--fs-h2); margin:0 0 14px}
+    .tagline{color:var(--muted); margin:0 0 18px}
+    .pill{display:inline-block; border:1px solid var(--ring); color:var(--accent);
+      padding:6px 10px; border-radius:999px; font-size:14px}
+    .row{display:flex; flex-wrap:wrap; gap:12px; align-items:center}
+
+    .btn{display:inline-block; background:var(--accent); color:#fff;
+      padding:10px 14px; border-radius:12px; font-weight:600; box-shadow:var(--shadow)}
+    .btn:hover{text-decoration:none; filter:brightness(1.05)}
+
+    .sep{height:1px; background:var(--border); margin:26px 0}
+
+    /* ===== Cards / Grids ===== */
+    .grid{display:grid; gap:18px}
+    /* auto-fit makes it fluid across all widths */
+    .grid.cards{grid-template-columns:repeat(auto-fit, minmax(240px, 1fr))}
+    .card{
+      background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+      padding:16px; transition:transform .08s ease, border-color .15s ease;
+    }
+    .card:hover{transform:translateY(-3px); border-color:var(--ring)}
+    .card h3{margin:0 0 8px; font-size:18px}
+    .card p{margin:0 0 10px; color:var(--muted)}
+    .thumb{aspect-ratio:16/9; border-radius:14px; overflow:hidden; background:#222; margin-bottom:10px}
+
+    .tags{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:8px}
+    .tag{font-size:12px; padding:4px 8px; border-radius:999px; background:rgba(14,165,233,.15); color:var(--accent)}
+
+    /* ===== Lists / Items ===== */
+    ul.clean{list-style:none; padding:0; margin:0}
+    .item{padding:14px; border-radius:14px; border:1px solid var(--border); background:var(--surface)}
+
+    footer{padding:40px 0 20px; color:var(--muted); font-size:14px; text-align:center}
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      *{scroll-behavior:auto !important; transition:none !important}
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container nav-wrap">
+      <div class="brand">
+        <img class="avatar" src="avatar.jpg" alt="Headshot of Your Name" />
+        <div>
+          <div class="name">Your Name</div>
+          <div style="color:var(--muted); font-size:14px">EE • Robotics & Controls</div>
+        </div>
+      </div>
+
+      <!-- Desktop links -->
+      <nav id="menu" aria-label="Primary">
+        <div class="nav-links">
+          <a href="#projects">Projects</a>
+          <a href="#experience">Experience</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </nav>
+
+      <!-- Mobile button -->
+      <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="drawer" aria-label="Open navigation">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div id="drawer" hidden>
+      <div class="container">
+        <div class="item" style="margin-top:8px">
+          <div class="row" style="justify-content:space-around">
+            <a href="#projects">Projects</a>
+            <a href="#experience">Experience</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="container">
+    <!-- Hero -->
+    <section class="hero">
+      <span class="pill">Open to internships • Summer 2026</span>
+      <h1>I build delightful hardware & intelligent systems.</h1>
+      <p class="tagline">Recent work: autonomous kitty robot, haptic glove for teleoperation, interactive cosplay electronics.</p>
+      <div class="row">
+        <a class="btn" href="resume.pdf">Download Résumé</a>
+        <a href="#projects">See projects ↓</a>
+      </div>
+    </section>
+
+    <div class="sep" role="presentation"></div>
+
+    <!-- Projects -->
+    <section id="projects" aria-labelledby="proj-h">
+      <h2 id="proj-h">Featured Projects</h2>
+
+      <div class="grid cards">
+        <!-- Project 1 -->
+        <article class="card">
+          <div class="thumb">
+            <!-- optional preview image -->
+            <img src="img/kitty.jpg" alt="Autonomous kitty robot with OLED eyes" />
+          </div>
+          <h3>Autonomous Kitty Robot</h3>
+          <p>Modular, obstacle-avoiding bot with expressive OLED eyes; ultrasonic sensing and adaptive behaviors.</p>
+          <div class="tags"><span class="tag">C++</span><span class="tag">Arduino</span><span class="tag">Controls</span></div>
+          <div class="row">
+            <a class="btn" href="#">Case Study</a>
+            <a href="https://github.com/USERNAME/kitty-robot">Code ↗</a>
+            <a href="#">Demo ↗</a>
+          </div>
+        </article>
+
+        <!-- Project 2 -->
+        <article class="card">
+          <div class="thumb"><img src="img/glove.jpg" alt="Haptic glove prototype" /></div>
+          <h3>Haptic Glove for Teleoperation</h3>
+          <p>Force-feedback glove evaluated in a peg-in-hole study; reduced task time vs visual-only baseline.</p>
+          <div class="tags"><span class="tag">ROS2</span><span class="tag">Mechatronics</span><span class="tag">User Study</span></div>
+          <div class="row">
+            <a class="btn" href="#">Poster</a>
+            <a href="https://github.com/USERNAME/haptic-glove">Code ↗</a>
+          </div>
+        </article>
+
+        <!-- Project 3 -->
+        <article class="card">
+          <div class="thumb"><img src="img/spider.jpg" alt="Spider mask with moving lenses" /></div>
+          <h3>Spider-Mask Animatronics</h3>
+          <p>IR-gesture input and servo control for lens animations; low-latency motion profiles.</p>
+          <div class="tags"><span class="tag">Embedded</span><span class="tag">3D Print</span><span class="tag">Servo</span></div>
+          <div class="row">
+            <a class="btn" href="#">Write-up</a>
+            <a href="https://github.com/USERNAME/spider-mask">Code ↗</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Experience -->
+    <section id="experience" aria-labelledby="exp-h">
+      <h2 id="exp-h">Experience & Extracurriculars</h2>
+      <div class="grid" style="grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:16px">
+        <div class="item">
+          <h3 style="margin:0 0 6px">Northrop Grumman – Integration & Test Intern</h3>
+          <p class="tagline">Summer 2024 • BACN program</p>
+          <ul class="clean">
+            <li>Automated hardware validation (Python) adopted in field workflows.</li>
+            <li>Presented results to a 25-person team with clear docs and demos.</li>
+          </ul>
+        </div>
+        <div class="item">
+          <h3 style="margin:0 0 6px">Robotics Club – Electronics Subteam Lead</h3>
+          <ul class="clean">
+            <li>Owned motor control stack (Teensy + FOC), cut bring-up time by 40%.</li>
+            <li>Mentored 5 teammates; ran code reviews and weekly standups.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about">
+      <h2>About</h2>
+      <p>I’m an EE focused on controls and embedded systems. I turn playful ideas into robust prototypes—clean schematics, readable firmware, and thoughtful UX. Currently exploring mobile manipulation and haptics.</p>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+      <h2>Contact</h2>
+      <div class="row">
+        <a class="btn" href="mailto:you@yourdomain.com">Email me</a>
+        <a href="https://www.linkedin.com/in/yourhandle">LinkedIn</a>
+        <a href="https://github.com/USERNAME">GitHub</a>
+      </div>
+    </section>
+
+    <footer>© <span id="y"></span> Your Name • Built with GitHub Pages</footer>
+  </main>
+
+  <script>
+    // Year stamp
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Mobile drawer toggle (accessible)
+    const btn = document.getElementById('menuBtn');
+    const drawer = document.getElementById('drawer');
+    btn?.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!open));
+      drawer.hidden = open;
+    });
+  </script>
+</body>
 </html>
