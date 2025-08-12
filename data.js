@@ -15,20 +15,25 @@ const siteData = {
   
     highlights: {
       projects: ["kitty-robot", "haptic-glove", "spider-mask"],
-      experience: ["ng-intern", "robotics-lead"],
+      experience: ["ng-intern", "robotics-lead"],     // kept for history; not rendered on home
       extracurriculars: ["auv-team", "outreach"]
     },
   
     projects: [
       { id: "kitty-robot",  title: "Autonomous Kitty Robot",
         desc: "Obstacle-avoiding bot with expressive OLED eyes, ultrasonic sensing, and adaptive behaviors.",
-        img:  "img/kitty.jpg" },
+        img:  "img/kitty.jpg",
+        category: "personal" },
+  
       { id: "haptic-glove", title: "Haptic Glove for Teleoperation",
         desc: "Force-feedback glove tested in a peg-in-hole study; reduced task time vs visual-only.",
-        img:  "img/glove.jpg" },
+        img:  "img/glove.jpg",
+        category: "academic" },
+  
       { id: "spider-mask",  title: "Spider-Mask Animatronics",
         desc: "3D-printed moving lenses with IR gesture control and low-latency servo actuation.",
-        img:  "img/spider.jpg" }
+        img:  "img/spider.jpg",
+        category: "personal" }
     ],
   
     experience: [
@@ -49,3 +54,4 @@ const siteData = {
         img: "img/outreach.jpg" }
     ]
   };
+  

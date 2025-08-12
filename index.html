@@ -6,13 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" id="site-desc" />
   <link rel="stylesheet" href="style.css" />
-  <!-- data.js loads FIRST so siteData + contact rendering are available -->
   <script src="data.js"></script>
 </head>
 <body>
   <header>
     <div class="brand">
-      <img id="avatar" alt="Your headshot">
       <div>
         <strong id="name"></strong><br>
         <span id="tagline"></span>
@@ -20,8 +18,7 @@
     </div>
     <nav>
       <a href="index.html">About</a>
-      <a href="projects.html">Projects</a>
-      <a href="experience.html">Experience</a>
+      <a href="portfolio.html">Portfolio</a>
       <a href="extracurriculars.html">Extracurriculars</a>
       <a href="/#contact">Contact</a>
     </nav>
@@ -33,7 +30,6 @@
         <div class="hero-image">
           <img id="hero-avatar" src="img/avatar.jpg" alt="Headshot of Kaitlin Calimbahin">
         </div>
-        <!-- Put this back so data.js can populate it -->
         <div id="hero-contacts" class="hero-contacts plain"></div>
       </div>
 
@@ -43,24 +39,19 @@
         <p id="about-text" class="about-in-hero"></p>
         <div class="row">
           <a class="btn" href="resume.pdf">Download Résumé</a>
-          <a href="projects.html">See projects ↗</a>
+          <a href="portfolio.html">See projects ↗</a>
         </div>
       </div>
     </section>
 
-    <!-- Highlights that link to full pages -->
+    <!-- Project highlights that link to Portfolio -->
     <section id="projects">
       <h2>Projects</h2>
       <div id="projects-highlights" class="preview-grid"></div>
-      <p style="margin-top:10px"><a class="btn" href="projects.html">View all projects</a></p>
+      <p style="margin-top:10px"><a class="btn" href="portfolio.html">View all projects</a></p>
     </section>
 
-    <section id="experience">
-      <h2>Experience</h2>
-      <div id="experience-highlights" class="preview-grid"></div>
-      <p style="margin-top:10px"><a class="btn" href="experience.html">View all experience</a></p>
-    </section>
-
+    <!-- Keep your extracurriculars teaser on the home page (optional) -->
     <section id="extracurriculars">
       <h2>Extracurriculars</h2>
       <div id="extracurriculars-highlights" class="preview-grid"></div>
@@ -70,7 +61,7 @@
     <section id="contact">
       <h2>Contact</h2>
       <p id="contact-links"></p>
-    
+    </section>
   </main>
 
   <footer>
@@ -82,19 +73,16 @@
     const setText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
     const setHTML = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
     const setSrc  = (id, src)  => { const el = document.getElementById(id); if (el) el.src = src; };
-  
+
     // --- icons (SVG) ---
-    // Preferred envelope icon
     const mailSvg = `
-    <svg class="icon" viewBox="0 0 16 16" aria-hidden="true">
-      <path fill="currentColor"
-            d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v.217L8 8.5 0 4.217V4z"/>
-      <path fill="currentColor"
-            d="M0 4.697v7.104A2 2 0 0 0 2 14h12a2 2 0 0 0 2-2.199V4.697L8 9.5 0 4.697z"/>
-    </svg>`;
-  
-  
-    // LinkedIn “in” logo (no border)
+      <svg class="icon" viewBox="0 0 16 16" aria-hidden="true">
+        <path fill="currentColor"
+              d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v.217L8 8.5 0 4.217V4z"/>
+        <path fill="currentColor"
+              d="M0 4.697v7.104A2 2 0 0 0 2 14h12a2 2 0 0 0 2-2.199V4.697L8 9.5 0 4.697z"/>
+      </svg>`;
+
     const liSvg = `
       <svg class="icon" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path fill="currentColor"
@@ -103,22 +91,21 @@
              c0-34.7-.7-79.3-48.3-79.3-48.3 0-55.7 37.7-55.7 76.7V448h-92.5V148.9h88.8v40.8h1.3c12.4-23.5 42.7-48.3
              87.9-48.3 94 0 111.3 61.9 111.3 142.3V448z"/>
       </svg>`;
-  
+
     // --- meta / header / hero text ---
     document.title = siteData.title;
     const desc = document.getElementById("site-desc");
     if (desc) desc.setAttribute("content", siteData.description);
-  
-    setSrc("avatar", siteData.avatar);
+
     setSrc("hero-avatar", siteData.avatar);
     setText("name", siteData.name);
     setText("tagline", siteData.tagline);
     setText("name-footer", siteData.name);
     setText("year", new Date().getFullYear());
-  
+
     setText("hero-title", siteData.heroTitle);
     setText("about-text", siteData.about);
-  
+
     // --- contacts (pull from siteData) ---
     const hc = document.getElementById("hero-contacts");
     if (hc) {
@@ -131,7 +118,7 @@
         </a>
       `;
     }
-  
+
     const cl = document.getElementById("contact-links");
     if (cl) {
       cl.innerHTML = `
@@ -144,15 +131,13 @@
         </a>
       `;
     }
-  
-    // --- preview cards ---
+
+    // --- preview cards (home) ---
     const placeholder = "img/placeholder.jpg";
-    const byId = (arr, id) => arr.find(x => x.id === id);
-  
-    function makePreviewCard(item, page, useDescKey = "desc") {
+    function makePreviewCard(item, useDescKey = "desc") {
       const a = document.createElement("a");
       a.className = "preview-card";
-      a.href = `${page}.html#${item.id}`;
+      a.href = `portfolio.html#${item.id}`; // deep-link to portfolio
       const img = item.img || placeholder;
       const desc = item[useDescKey] || "";
       a.innerHTML = `
@@ -162,31 +147,24 @@
       `;
       return a;
     }
-  
+
+    // Projects highlights only
     const ph = document.getElementById("projects-highlights");
     if (ph && siteData.highlights?.projects) {
       siteData.highlights.projects.forEach(id => {
-        const p = byId(siteData.projects, id);
-        if (p) ph.appendChild(makePreviewCard(p, "projects", "desc"));
+        const p = siteData.projects.find(x => x.id === id);
+        if (p) ph.appendChild(makePreviewCard(p, "desc"));
       });
     }
-  
-    const eh = document.getElementById("experience-highlights");
-    if (eh && siteData.highlights?.experience) {
-      siteData.highlights.experience.forEach(id => {
-        const e = byId(siteData.experience, id);
-        if (e) eh.appendChild(makePreviewCard(e, "experience", "details"));
-      });
-    }
-  
+
+    // Extracurriculars highlights (optional)
     const xh = document.getElementById("extracurriculars-highlights");
     if (xh && siteData.highlights?.extracurriculars) {
       siteData.highlights.extracurriculars.forEach(id => {
-        const x = byId(siteData.extracurriculars, id);
-        if (x) xh.appendChild(makePreviewCard(x, "extracurriculars", "details"));
+        const x = siteData.extracurriculars.find(e => e.id === id);
+        if (x) xh.appendChild(makePreviewCard(x, "details"));
       });
     }
   </script>
-    
 </body>
 </html>

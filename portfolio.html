@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Portfolio – Kaitlin Calimbahin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Personal and academic projects" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="data.js"></script>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div>
+        <strong id="name"></strong><br>
+        <span id="tagline"></span>
+      </div>
+    </div>
+    <nav>
+      <a href="index.html">About</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="extracurriculars.html">Extracurriculars</a>
+      <a href="/#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h1>Portfolio</h1>
+      <p class="about-in-hero">A selection of my personal and academic projects.</p>
+    </section>
+
+    <section id="personal">
+      <h2>Personal Projects</h2>
+      <div id="personal-list" class="preview-grid"></div>
+    </section>
+
+    <section id="academic">
+      <h2>Academic Projects</h2>
+      <div id="academic-list" class="preview-grid"></div>
+    </section>
+  </main>
+
+  <footer>
+    © <span id="year"></span> <span id="name-footer"></span>
+  </footer>
+
+  <script>
+    const setText = (id, t) => { const el = document.getElementById(id); if (el) el.textContent = t; };
+
+    // Header/Footer text
+    setText("name", siteData.name);
+    setText("tagline", siteData.tagline);
+    setText("name-footer", siteData.name);
+    setText("year", new Date().getFullYear());
+
+    // Card builder – gives each card an id so index links can deep-link
+    const placeholder = "img/placeholder.jpg";
+    function makeCard(p){
+      const a = document.createElement("a");
+      a.className = "preview-card";
+      a.id = p.id;                         // anchor target
+      a.href = p.link || "#";              // optional external link
+      const img = p.img || placeholder;
+      a.innerHTML = `
+        <div class="thumb"><img src="${img}" alt="${p.title}"></div>
+        <h3>${p.title}</h3>
+        <p class="muted">${p.desc || ""}</p>
+      `;
+      return a;
+    }
+
+    // Render lists
+    const personal = siteData.projects.filter(p => p.category === "personal");
+    const academic = siteData.projects.filter(p => p.category === "academic");
+
+    const pWrap = document.getElementById("personal-list");
+    personal.forEach(p => pWrap.appendChild(makeCard(p)));
+
+    const aWrap = document.getElementById("academic-list");
+    academic.forEach(p => aWrap.appendChild(makeCard(p)));
+  </script>
+</body>
+</html>
