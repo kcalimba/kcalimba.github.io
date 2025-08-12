@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" id="site-desc" />
   <link rel="stylesheet" href="style.css" />
+  <!-- data.js loads FIRST so siteData + contact rendering are available -->
   <script src="data.js"></script>
 </head>
 <body>
@@ -27,16 +28,15 @@
   </header>
 
   <main>
-    <!-- Hero (About-focused) -->
     <section id="hero" class="hero">
       <div class="hero-aside">
         <div class="hero-image">
           <img id="hero-avatar" src="img/avatar.jpg" alt="Headshot of Kaitlin Calimbahin">
         </div>
-        <!-- New: contact buttons under headshot -->
-        <div id="hero-contacts" class="hero-contacts"></div>
+        <!-- Put this back so data.js can populate it -->
+        <div id="hero-contacts" class="hero-contacts plain"></div>
       </div>
-    
+
       <div class="hero-text">
         <span class="pill">Open to internships • Summer 2026</span>
         <h1 id="hero-title"></h1>
@@ -46,7 +46,7 @@
           <a href="projects.html">See projects ↗</a>
         </div>
       </div>
-    </section>    
+    </section>
 
     <!-- Highlights that link to full pages -->
     <section id="projects">
@@ -54,23 +54,22 @@
       <div id="projects-highlights" class="preview-grid"></div>
       <p style="margin-top:10px"><a class="btn" href="projects.html">View all projects</a></p>
     </section>
-    
+
     <section id="experience">
       <h2>Experience</h2>
       <div id="experience-highlights" class="preview-grid"></div>
       <p style="margin-top:10px"><a class="btn" href="experience.html">View all experience</a></p>
     </section>
-    
+
     <section id="extracurriculars">
       <h2>Extracurriculars</h2>
       <div id="extracurriculars-highlights" class="preview-grid"></div>
       <p style="margin-top:10px"><a class="btn" href="extracurriculars.html">View all extracurriculars</a></p>
-    </section>    
-    
+    </section>
+
     <section id="contact">
       <h2>Contact</h2>
       <p id="contact-links"></p>
-    </section>
     
   </main>
 
@@ -79,17 +78,37 @@
   </footer>
 
   <script>
-    // helpers
+    // --- helpers ---
     const setText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
     const setHTML = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
-    const setSrc = (id, src) => { const el = document.getElementById(id); if (el) el.src = src; };
+    const setSrc  = (id, src)  => { const el = document.getElementById(id); if (el) el.src = src; };
   
-    // meta
+    // --- icons (SVG) ---
+    // Preferred envelope icon
+    const mailSvg = `
+    <svg class="icon" viewBox="0 0 16 16" aria-hidden="true">
+      <path fill="currentColor"
+            d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v.217L8 8.5 0 4.217V4z"/>
+      <path fill="currentColor"
+            d="M0 4.697v7.104A2 2 0 0 0 2 14h12a2 2 0 0 0 2-2.199V4.697L8 9.5 0 4.697z"/>
+    </svg>`;
+  
+  
+    // LinkedIn “in” logo (no border)
+    const liSvg = `
+      <svg class="icon" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path fill="currentColor"
+          d="M100.28 448H7.4V148.9h92.88V448zM53.84 106.1C24.1 106.1 0 82 0 52.3
+             0 22.6 24.1-1.5 53.84-1.5S107.7 22.6 107.7 52.3c0 29.7-24.1 53.8-53.86 53.8zM447.9 448h-92.4V302.4
+             c0-34.7-.7-79.3-48.3-79.3-48.3 0-55.7 37.7-55.7 76.7V448h-92.5V148.9h88.8v40.8h1.3c12.4-23.5 42.7-48.3
+             87.9-48.3 94 0 111.3 61.9 111.3 142.3V448z"/>
+      </svg>`;
+  
+    // --- meta / header / hero text ---
     document.title = siteData.title;
     const desc = document.getElementById("site-desc");
     if (desc) desc.setAttribute("content", siteData.description);
   
-    // header/footer
     setSrc("avatar", siteData.avatar);
     setSrc("hero-avatar", siteData.avatar);
     setText("name", siteData.name);
@@ -97,15 +116,36 @@
     setText("name-footer", siteData.name);
     setText("year", new Date().getFullYear());
   
-    // hero/about
     setText("hero-title", siteData.heroTitle);
     setText("about-text", siteData.about);
   
-    // contact
-    setHTML("contact-links", siteData.contactHTML);
-    setHTML("hero-contacts", siteData.contactHTML);
+    // --- contacts (pull from siteData) ---
+    const hc = document.getElementById("hero-contacts");
+    if (hc) {
+      hc.innerHTML = `
+        <a class="contact-link" href="${siteData.emailHref}">
+          ${mailSvg}<span>Email</span>
+        </a>
+        <a class="contact-link" href="${siteData.linkedinHref}" target="_blank" rel="noopener">
+          ${liSvg}<span>LinkedIn</span>
+        </a>
+      `;
+    }
   
-    // ---- preview cards ----
+    const cl = document.getElementById("contact-links");
+    if (cl) {
+      cl.innerHTML = `
+        <a class="contact-link" href="${siteData.emailHref}">
+          ${mailSvg}<span>Email</span>
+        </a>
+        <span class="sep-bar"> | </span>
+        <a class="contact-link" href="${siteData.linkedinHref}" target="_blank" rel="noopener">
+          ${liSvg}<span>LinkedIn</span>
+        </a>
+      `;
+    }
+  
+    // --- preview cards ---
     const placeholder = "img/placeholder.jpg";
     const byId = (arr, id) => arr.find(x => x.id === id);
   
@@ -123,7 +163,6 @@
       return a;
     }
   
-    // Projects (use 'desc')
     const ph = document.getElementById("projects-highlights");
     if (ph && siteData.highlights?.projects) {
       siteData.highlights.projects.forEach(id => {
@@ -132,7 +171,6 @@
       });
     }
   
-    // Experience (use 'details')
     const eh = document.getElementById("experience-highlights");
     if (eh && siteData.highlights?.experience) {
       siteData.highlights.experience.forEach(id => {
@@ -141,7 +179,6 @@
       });
     }
   
-    // Extracurriculars (use 'details')
     const xh = document.getElementById("extracurriculars-highlights");
     if (xh && siteData.highlights?.extracurriculars) {
       siteData.highlights.extracurriculars.forEach(id => {
@@ -150,6 +187,6 @@
       });
     }
   </script>
-  
+    
 </body>
 </html>

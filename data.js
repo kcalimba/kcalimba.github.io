@@ -10,10 +10,8 @@ const siteData = {
     about:
       "I'm an EE focused on controls and embedded systems. I like turning wild ideas into working, well-designed hardware—clean schematics, readable firmware, and thoughtful UX. Currently exploring mobile manipulation and haptics.",
   
-      contactHTML: `
-      <a href="mailto:kcalimbahin@ucsd.edu">Email</a>
-      <a href="https://www.linkedin.com/in/kaitlin-calimbahin" target="_blank" rel="noopener">LinkedIn</a>    
-    `,    
+    emailHref: "mailto:kcalimbahin@ucsd.edu",
+    linkedinHref: "https://www.linkedin.com/in/kaitlin-calimbahin",
   
     highlights: {
       projects: ["kitty-robot", "haptic-glove", "spider-mask"],
@@ -22,40 +20,32 @@ const siteData = {
     },
   
     projects: [
-      { id: "kitty-robot",   title: "Autonomous Kitty Robot",
+      { id: "kitty-robot",  title: "Autonomous Kitty Robot",
         desc: "Obstacle-avoiding bot with expressive OLED eyes, ultrasonic sensing, and adaptive behaviors.",
-        img:  "img/kitty.jpg"
-      },
-      { id: "haptic-glove",  title: "Haptic Glove for Teleoperation",
+        img:  "img/kitty.jpg" },
+      { id: "haptic-glove", title: "Haptic Glove for Teleoperation",
         desc: "Force-feedback glove tested in a peg-in-hole study; reduced task time vs visual-only.",
-        img:  "img/glove.jpg"
-      },
-      { id: "spider-mask",   title: "Spider-Mask Animatronics",
+        img:  "img/glove.jpg" },
+      { id: "spider-mask",  title: "Spider-Mask Animatronics",
         desc: "3D-printed moving lenses with IR gesture control and low-latency servo actuation.",
-        img:  "img/spider.jpg"
-      }
+        img:  "img/spider.jpg" }
     ],
   
     experience: [
-      { id: "ng-intern",     title: "Northrop Grumman – Integration & Test Intern",
+      { id: "ng-intern", title: "Northrop Grumman – Integration & Test Intern",
         details: "Automated hardware validation (Python) adopted in field workflows; collaborated with a 25-person team.",
-        img:  "img/ng.jpg"
-      },
+        img: "img/ng.jpg" },
       { id: "robotics-lead", title: "Robotics Club – Electronics Subteam Lead",
         details: "Owned motor control stack (Teensy + FOC); mentored 5 teammates; cut bring-up time by 40%.",
-        img:  "img/robotics.jpg"
-      }
+        img: "img/robotics.jpg" }
     ],
   
     extracurriculars: [
-      { id: "auv-team",      title: "AUV Subteam (Electronics)",
+      { id: "auv-team", title: "AUV Subteam (Electronics)",
         details: "Supported design/bring-up for autonomous underwater vehicle electronics.",
-        img:  "img/auv.jpg"
-      },
-      { id: "outreach",      title: "Robotics Outreach / Workshops",
+        img: "img/auv.jpg" },
+      { id: "outreach", title: "Robotics Outreach / Workshops",
         details: "Organized demos and beginner workshops for student orgs and local schools.",
-        img:  "img/outreach.jpg"
-      }
+        img: "img/outreach.jpg" }
     ]
   };
-  

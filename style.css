@@ -264,9 +264,10 @@
 .hero-aside{
     display:flex;
     flex-direction:column;
-    align-items:center;
+    align-items:center; /* was center */
     gap:12px;
   }
+  
   
   /* Contact chips under the headshot */
   .hero-contacts{
@@ -299,3 +300,93 @@ html { scroll-behavior: smooth; }
 
 /* Prevent header from covering the anchor */
 #contact { scroll-margin-top: 90px; }
+
+/* icon + text links */
+.contact-link{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-weight:600;
+    color:var(--text);
+    text-decoration:none;
+  }
+  .contact-link:hover{ color:var(--accent); }
+  
+  /* vertical list under headshot */
+  .hero-contacts.plain{
+    display:flex;
+    flex-direction:column;
+    align-items:center;  /* left align */
+    gap:8px;
+  }
+  
+  /* remove chip styles from hero-contacts when using 'plain' */
+  .hero-contacts.plain a{
+    background:none;
+    border:0;
+    padding:0;
+    border-radius:0;
+  }
+  
+  /* nice separator in bottom contact section */
+  .sep-bar{ color:var(--muted); margin:0 10px; }
+  
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .contact-item {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+    color: black;
+  }
+  
+  .email-icon {
+    transform: translateY(1px); /* lowers the envelope slightly */
+  }
+  
+  .linkedin-icon {
+    border: none;
+    border-radius: 50%;
+    padding: 2px;
+    background-color: white;
+}
+
+/* Remove border from LinkedIn icon */
+#hero-contacts a[href*="linkedin"] .icon,
+#contact-links a[href*="linkedin"] .icon {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+.icon {
+    border: none;
+    vertical-align: middle;
+    width: 1em;
+    height: 1em;
+    fill: currentColor;
+  }
+
+.contact-link svg {
+    border: none;
+  }
+
+.contact-item.no-border img.linkedin-icon {
+    border: none;
+  }
+
+  .contact-link .icon{
+    width:20px;
+    height:20px;
+    margin-right:8px;
+    vertical-align:-3px;
+  }
+  
+    
