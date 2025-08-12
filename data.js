@@ -1,50 +1,60 @@
 const siteData = {
-    // Site info
-    title: "Kaitlin Calimba – Portfolio",
-    description: "Projects, experience, and contact info for Kaitlin Calimba.",
-    avatar: "img/avatar.jpg", // put your headshot in /img folder
-    name: "Kaitlin Calimba",
-    tagline: "Electrical / Computer Engineer • Robotics & Controls",
+    title: "Kaitlin Calimbahin – Portfolio",
+    description: "Projects, experience, and contact info for Kaitlin Calimbahin.",
+    avatar: "img/avatar.jpg",
+    name: "Kaitlin Calimbahin",
+    tagline: "Electrical Engineering • University California, San Diego",
   
-    // Hero
     heroTitle: "I build delightful hardware & intelligent systems.",
-    heroSubtitle: "Recent work: autonomous kitty robot, haptic glove for teleoperation, interactive cosplay electronics.",
+    heroSubtitle: "",
+    about:
+      "I'm an EE focused on controls and embedded systems. I like turning wild ideas into working, well-designed hardware—clean schematics, readable firmware, and thoughtful UX. Currently exploring mobile manipulation and haptics.",
   
-    // About
-    about: "I'm an EE focused on controls and embedded systems. I like turning wild ideas into working, well-designed hardware—clean schematics, readable firmware, and thoughtful UX. Currently exploring mobile manipulation and haptics.",
+      contactHTML: `
+      <a href="mailto:kcalimbahin@ucsd.edu">Email</a>
+      <a href="https://www.linkedin.com/in/kaitlin-calimbahin" target="_blank" rel="noopener">LinkedIn</a>    
+    `,    
   
-    // Contact
-    contactHTML: `
-      <a href="mailto:you@example.com">Email</a> |
-      <a href="https://linkedin.com/in/yourhandle" target="_blank">LinkedIn</a> |
-      <a href="https://github.com/kcalimba" target="_blank">GitHub</a>
-    `,
+    highlights: {
+      projects: ["kitty-robot", "haptic-glove", "spider-mask"],
+      experience: ["ng-intern", "robotics-lead"],
+      extracurriculars: ["auv-team", "outreach"]
+    },
   
-    // Projects
     projects: [
-      {
-        title: "Autonomous Kitty Robot",
-        desc: "Obstacle-avoiding bot with expressive OLED eyes, ultrasonic sensing, and adaptive behaviors."
+      { id: "kitty-robot",   title: "Autonomous Kitty Robot",
+        desc: "Obstacle-avoiding bot with expressive OLED eyes, ultrasonic sensing, and adaptive behaviors.",
+        img:  "img/kitty.jpg"
       },
-      {
-        title: "Haptic Glove for Teleoperation",
-        desc: "Force-feedback glove tested in a peg-in-hole user study; reduced task time vs visual-only."
+      { id: "haptic-glove",  title: "Haptic Glove for Teleoperation",
+        desc: "Force-feedback glove tested in a peg-in-hole study; reduced task time vs visual-only.",
+        img:  "img/glove.jpg"
       },
-      {
-        title: "Spider-Mask Animatronics",
-        desc: "3D-printed moving lenses with IR gesture control and low-latency servo actuation."
+      { id: "spider-mask",   title: "Spider-Mask Animatronics",
+        desc: "3D-printed moving lenses with IR gesture control and low-latency servo actuation.",
+        img:  "img/spider.jpg"
       }
     ],
   
-    // Experience
     experience: [
-      {
-        title: "Northrop Grumman – Integration & Test Intern",
-        details: "Automated hardware validation (Python) adopted in field workflows; collaborated with a 25-person team."
+      { id: "ng-intern",     title: "Northrop Grumman – Integration & Test Intern",
+        details: "Automated hardware validation (Python) adopted in field workflows; collaborated with a 25-person team.",
+        img:  "img/ng.jpg"
       },
-      {
-        title: "Robotics Club – Electronics Subteam Lead",
-        details: "Owned motor control stack (Teensy + FOC), cut bring-up time by 40%; mentored 5 teammates."
+      { id: "robotics-lead", title: "Robotics Club – Electronics Subteam Lead",
+        details: "Owned motor control stack (Teensy + FOC); mentored 5 teammates; cut bring-up time by 40%.",
+        img:  "img/robotics.jpg"
+      }
+    ],
+  
+    extracurriculars: [
+      { id: "auv-team",      title: "AUV Subteam (Electronics)",
+        details: "Supported design/bring-up for autonomous underwater vehicle electronics.",
+        img:  "img/auv.jpg"
+      },
+      { id: "outreach",      title: "Robotics Outreach / Workshops",
+        details: "Organized demos and beginner workshops for student orgs and local schools.",
+        img:  "img/outreach.jpg"
       }
     ]
   };

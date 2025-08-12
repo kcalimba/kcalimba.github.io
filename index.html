@@ -5,11 +5,7 @@
   <title id="site-title"></title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" id="site-desc" />
-
-  <!-- Link to external CSS file -->
   <link rel="stylesheet" href="style.css" />
-
-  <!-- Load content variables first -->
   <script src="data.js"></script>
 </head>
 <body>
@@ -22,76 +18,138 @@
       </div>
     </div>
     <nav>
-      <a href="#projects">Projects</a>
-      <a href="#experience">Experience</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
+      <a href="index.html">About</a>
+      <a href="projects.html">Projects</a>
+      <a href="experience.html">Experience</a>
+      <a href="extracurriculars.html">Extracurriculars</a>
+      <a href="/#contact">Contact</a>
     </nav>
   </header>
 
   <main>
-    <section id="hero">
-      <h1 id="hero-title"></h1>
-      <p id="hero-subtitle"></p>
-    </section>
+    <!-- Hero (About-focused) -->
+    <section id="hero" class="hero">
+      <div class="hero-aside">
+        <div class="hero-image">
+          <img id="hero-avatar" src="img/avatar.jpg" alt="Headshot of Kaitlin Calimbahin">
+        </div>
+        <!-- New: contact buttons under headshot -->
+        <div id="hero-contacts" class="hero-contacts"></div>
+      </div>
+    
+      <div class="hero-text">
+        <span class="pill">Open to internships • Summer 2026</span>
+        <h1 id="hero-title"></h1>
+        <p id="about-text" class="about-in-hero"></p>
+        <div class="row">
+          <a class="btn" href="resume.pdf">Download Résumé</a>
+          <a href="projects.html">See projects ↗</a>
+        </div>
+      </div>
+    </section>    
 
+    <!-- Highlights that link to full pages -->
     <section id="projects">
       <h2>Projects</h2>
-      <div id="project-list" class="grid"></div>
+      <div id="projects-highlights" class="preview-grid"></div>
+      <p style="margin-top:10px"><a class="btn" href="projects.html">View all projects</a></p>
     </section>
-
+    
     <section id="experience">
-      <h2>Experience & Extracurriculars</h2>
-      <div id="experience-list"></div>
+      <h2>Experience</h2>
+      <div id="experience-highlights" class="preview-grid"></div>
+      <p style="margin-top:10px"><a class="btn" href="experience.html">View all experience</a></p>
     </section>
-
-    <section id="about">
-      <h2>About</h2>
-      <p id="about-text"></p>
-    </section>
-
+    
+    <section id="extracurriculars">
+      <h2>Extracurriculars</h2>
+      <div id="extracurriculars-highlights" class="preview-grid"></div>
+      <p style="margin-top:10px"><a class="btn" href="extracurriculars.html">View all extracurriculars</a></p>
+    </section>    
+    
     <section id="contact">
       <h2>Contact</h2>
       <p id="contact-links"></p>
     </section>
+    
   </main>
 
   <footer>
     © <span id="year"></span> <span id="name-footer"></span>
   </footer>
 
-  <!-- JavaScript to inject content from data.js -->
   <script>
-    // Apply data from data.js
-    document.getElementById("site-title").textContent = siteData.title;
-    document.getElementById("site-desc").setAttribute("content", siteData.description);
-    document.getElementById("avatar").src = siteData.avatar;
-    document.getElementById("name").textContent = siteData.name;
-    document.getElementById("tagline").textContent = siteData.tagline;
-    document.getElementById("hero-title").textContent = siteData.heroTitle;
-    document.getElementById("hero-subtitle").textContent = siteData.heroSubtitle;
-    document.getElementById("about-text").textContent = siteData.about;
-    document.getElementById("contact-links").innerHTML = siteData.contactHTML;
-    document.getElementById("year").textContent = new Date().getFullYear();
-    document.getElementById("name-footer").textContent = siteData.name;
-
-    // Projects
-    const projContainer = document.getElementById("project-list");
-    siteData.projects.forEach(p => {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `<h3>${p.title}</h3><p>${p.desc}</p>`;
-      projContainer.appendChild(card);
-    });
-
-    // Experience
-    const expContainer = document.getElementById("experience-list");
-    siteData.experience.forEach(e => {
-      const item = document.createElement("div");
-      item.className = "item";
-      item.innerHTML = `<h4>${e.title}</h4><p>${e.details}</p>`;
-      expContainer.appendChild(item);
-    });
+    // helpers
+    const setText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+    const setHTML = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+    const setSrc = (id, src) => { const el = document.getElementById(id); if (el) el.src = src; };
+  
+    // meta
+    document.title = siteData.title;
+    const desc = document.getElementById("site-desc");
+    if (desc) desc.setAttribute("content", siteData.description);
+  
+    // header/footer
+    setSrc("avatar", siteData.avatar);
+    setSrc("hero-avatar", siteData.avatar);
+    setText("name", siteData.name);
+    setText("tagline", siteData.tagline);
+    setText("name-footer", siteData.name);
+    setText("year", new Date().getFullYear());
+  
+    // hero/about
+    setText("hero-title", siteData.heroTitle);
+    setText("about-text", siteData.about);
+  
+    // contact
+    setHTML("contact-links", siteData.contactHTML);
+    setHTML("hero-contacts", siteData.contactHTML);
+  
+    // ---- preview cards ----
+    const placeholder = "img/placeholder.jpg";
+    const byId = (arr, id) => arr.find(x => x.id === id);
+  
+    function makePreviewCard(item, page, useDescKey = "desc") {
+      const a = document.createElement("a");
+      a.className = "preview-card";
+      a.href = `${page}.html#${item.id}`;
+      const img = item.img || placeholder;
+      const desc = item[useDescKey] || "";
+      a.innerHTML = `
+        <div class="thumb"><img src="${img}" alt="${item.title}"></div>
+        <h3>${item.title}</h3>
+        <p class="muted">${desc}</p>
+      `;
+      return a;
+    }
+  
+    // Projects (use 'desc')
+    const ph = document.getElementById("projects-highlights");
+    if (ph && siteData.highlights?.projects) {
+      siteData.highlights.projects.forEach(id => {
+        const p = byId(siteData.projects, id);
+        if (p) ph.appendChild(makePreviewCard(p, "projects", "desc"));
+      });
+    }
+  
+    // Experience (use 'details')
+    const eh = document.getElementById("experience-highlights");
+    if (eh && siteData.highlights?.experience) {
+      siteData.highlights.experience.forEach(id => {
+        const e = byId(siteData.experience, id);
+        if (e) eh.appendChild(makePreviewCard(e, "experience", "details"));
+      });
+    }
+  
+    // Extracurriculars (use 'details')
+    const xh = document.getElementById("extracurriculars-highlights");
+    if (xh && siteData.highlights?.extracurriculars) {
+      siteData.highlights.extracurriculars.forEach(id => {
+        const x = byId(siteData.extracurriculars, id);
+        if (x) xh.appendChild(makePreviewCard(x, "extracurriculars", "details"));
+      });
+    }
   </script>
+  
 </body>
 </html>
