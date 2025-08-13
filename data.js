@@ -15,10 +15,11 @@ const siteData = {
   
     highlights: {
       projects: ["kitty-robot", "haptic-glove", "spider-mask"],
-      experience: ["ng-intern", "robotics-lead"],     // kept for history; not rendered on home
+      experience: ["ng-intern", "robotics-lead"],
       extracurriculars: ["auv-team", "outreach"]
     },
   
+    // Tag projects with category: "personal" or "academic"
     projects: [
       { id: "kitty-robot",  title: "Autonomous Kitty Robot",
         desc: "Obstacle-avoiding bot with expressive OLED eyes, ultrasonic sensing, and adaptive behaviors.",
