@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <title>Extracurriculars – Kaitlin Calimbahin</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Clubs, teams, and community work" />
   <link rel="stylesheet" href="style.css" />
   <script src="data.js"></script>
 </head>
@@ -11,12 +12,12 @@
   <header>
     <div class="brand">
       <div>
-        <strong id="name"></strong><br>
+        <strong id="name"></strong><br />
         <span id="tagline"></span>
       </div>
     </div>
     <nav>
-      <a href="index.html">Home</a>
+      <a href="/#top" class="home-link">Home</a>
       <a href="portfolio.html">Portfolio</a>
       <a href="extracurriculars.html">Extracurriculars</a>
       <a href="/#contact">Contact</a>
@@ -24,29 +25,66 @@
   </header>
 
   <main>
-    <h1>Extracurriculars</h1>
-    <div id="x-list" class="grid"></div>
+    <section>
+      <h1>Extracurriculars</h1>
+      <p class="about-in-hero">Clubs, teams, outreach, and leadership work.</p>
+    </section>
+
+    <section id="x" class="divided">
+      <h2>Activities</h2>
+      <div id="x-list" class="stack-list"></div>
+    </section>
   </main>
 
-  <footer>© <span id="y"></span> <span id="name-footer"></span></footer>
+  <footer>
+    © <span id="year"></span> <span id="name-footer"></span>
+  </footer>
 
   <script>
+    // Header/Footer
     const setText = (id, t) => { const el = document.getElementById(id); if (el) el.textContent = t; };
     setText("name", siteData.name);
     setText("tagline", siteData.tagline);
     setText("name-footer", siteData.name);
-    document.getElementById('y').textContent = new Date().getFullYear();
+    document.getElementById("year").textContent = new Date().getFullYear();
 
-    const list = document.getElementById("x-list");
-    if (list && Array.isArray(siteData.extracurriculars)) {
-      siteData.extracurriculars.forEach(x => {
-        const item = document.createElement("article");
-        item.className = "item";
-        item.id = x.id; // anchor
-        item.innerHTML = `<h3>${x.title}</h3><p>${x.details}</p>`;
-        list.appendChild(item);
-      });
+    // Row builder (same as portfolio)
+    const placeholder = "img/placeholder.jpg";
+    function makeRow(item){
+      const row = document.createElement("article");
+      row.className = "project-row";
+      row.id = item.id;
+
+      const text = document.createElement("div");
+      text.className = "project-text";
+      text.innerHTML = `<h3>${item.title}</h3><p>${item.details || ""}</p>`;
+
+      const media = document.createElement("div");
+      media.className = "project-media";
+      const img = item.img || placeholder;
+      media.innerHTML = `<div class="thumb"><img src="${img}" alt="${item.title}"></div>`;
+
+      row.appendChild(text);
+      row.appendChild(media);
+      return row;
     }
+
+    const wrap = document.getElementById("x-list");
+    if (wrap && Array.isArray(siteData.extracurriculars)) {
+      siteData.extracurriculars.forEach(item => wrap.appendChild(makeRow(item)));
+      if (siteData.extracurriculars.length === 0) wrap.closest("section").style.display = "none";
+    }
+
+    // Allow smooth top scroll if already on index and clicking Home
+    document.querySelectorAll('a.home-link').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const goingHome = a.getAttribute('href').startsWith('/#top');
+        if (goingHome && (location.pathname === '/' || location.pathname.endsWith('/index.html') || location.pathname.endsWith('index.html'))) {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+    });
   </script>
 </body>
 </html>

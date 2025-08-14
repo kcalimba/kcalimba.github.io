@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <title>Portfolio – Kaitlin Calimbahin</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Personal and academic projects" />
+  <meta name="description" content="Projects and experience" />
   <link rel="stylesheet" href="style.css" />
   <script src="data.js"></script>
 </head>
@@ -12,12 +12,12 @@
   <header>
     <div class="brand">
       <div>
-        <strong id="name"></strong><br>
+        <strong id="name"></strong><br />
         <span id="tagline"></span>
       </div>
     </div>
     <nav>
-      <a href="index.html">Home</a>
+      <a href="/#top" class="home-link">Home</a>
       <a href="portfolio.html">Portfolio</a>
       <a href="extracurriculars.html">Extracurriculars</a>
       <a href="/#contact">Contact</a>
@@ -27,22 +27,19 @@
   <main>
     <section>
       <h1>Portfolio</h1>
-      <p class="about-in-hero">A selection of my personal and academic projects, plus experience.</p>
+      <p class="about-in-hero">A selection of my projects and experience.</p>
     </section>
 
-    <section id="personal">
-      <h2>Personal Projects</h2>
-      <div id="personal-list" class="preview-grid"></div>
+    <!-- PROJECTS (stacked + alternating) -->
+    <section id="projects" class="divided">
+      <h2>Projects</h2>
+      <div id="projects-list" class="stack-list"></div>
     </section>
 
-    <section id="academic">
-      <h2>Academic Projects</h2>
-      <div id="academic-list" class="preview-grid"></div>
-    </section>
-
-    <section id="experience">
+    <!-- EXPERIENCE (stacked + alternating) -->
+    <section id="experience" class="divided">
       <h2>Experience</h2>
-      <div id="experience-list" class="preview-grid"></div>
+      <div id="experience-list" class="stack-list"></div>
     </section>
   </main>
 
@@ -51,41 +48,58 @@
   </footer>
 
   <script>
+    // Header/Footer text
     const setText = (id, t) => { const el = document.getElementById(id); if (el) el.textContent = t; };
     setText("name", siteData.name);
     setText("tagline", siteData.tagline);
     setText("name-footer", siteData.name);
     document.getElementById("year").textContent = new Date().getFullYear();
 
+    // Row builder (stacked + alternating via CSS)
     const placeholder = "img/placeholder.jpg";
-    function makeCard(item, descKey = "desc"){
-      const a = document.createElement("a");
-      a.className = "preview-card";
-      a.id = item.id; // anchor target for deep-links
-      a.href = item.link || "#";
+    function makeRow(item, descKey = "desc"){
+      const row = document.createElement("article");
+      row.className = "project-row";
+      row.id = item.id; // deep-link target
+
+      const text = document.createElement("div");
+      text.className = "project-text";
+      text.innerHTML = `<h3>${item.title}</h3><p>${item[descKey] || ""}</p>`;
+
+      const media = document.createElement("div");
+      media.className = "project-media";
       const img = item.img || placeholder;
-      const desc = item[descKey] || "";
-      a.innerHTML = `
-        <div class="thumb"><img src="${img}" alt="${item.title}"></div>
-        <h3>${item.title}</h3>
-        <p class="muted">${desc}</p>
-      `;
-      return a;
+      media.innerHTML = `<div class="thumb"><img src="${img}" alt="${item.title}"></div>`;
+
+      row.appendChild(text);
+      row.appendChild(media);
+      return row;
     }
 
-    // Projects by category
-    const personal = siteData.projects.filter(p => p.category === "personal");
-    const academic = siteData.projects.filter(p => p.category === "academic");
+    function renderRows(targetId, items, descKey){
+      const wrap = document.getElementById(targetId);
+      if (!wrap) return;
+      items.forEach(it => wrap.appendChild(makeRow(it, descKey)));
+      if (items.length === 0) wrap.closest("section").style.display = "none";
+    }
 
-    const pWrap = document.getElementById("personal-list");
-    personal.forEach(p => pWrap.appendChild(makeCard(p, "desc")));
+    // Projects: show "personal" or unspecified
+    const personalProjects = siteData.projects.filter(p => p.category === "personal" || !p.category);
+    renderRows("projects-list", personalProjects, "desc");
 
-    const aWrap = document.getElementById("academic-list");
-    academic.forEach(p => aWrap.appendChild(makeCard(p, "desc")));
+    // Experience: same pattern, using 'details'
+    renderRows("experience-list", siteData.experience, "details");
 
-    // Experience (uses 'details')
-    const eWrap = document.getElementById("experience-list");
-    siteData.experience.forEach(e => eWrap.appendChild(makeCard(e, "details")));
+    // Enable smooth scroll to top when clicking Home if already on index
+    document.querySelectorAll('a.home-link').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const goingHome = a.getAttribute('href').startsWith('/#top');
+        if (goingHome && (location.pathname === '/' || location.pathname.endsWith('/index.html') || location.pathname.endsWith('index.html'))) {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+    });
   </script>
 </body>
 </html>

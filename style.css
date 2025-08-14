@@ -389,4 +389,88 @@ html { scroll-behavior: smooth; }
     vertical-align:-3px;
   }
   
+/* ===== Stacked project rows (portfolio) ===== */
+.stack-list{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
+.project-row{
+  display:flex;
+  align-items:center;
+  gap:24px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:16px;
+  scroll-margin-top: 90px; /* avoids sticky header overlap on anchor links */
+}
+
+/* Alternate: even rows flip image/text */
+.stack-list .project-row:nth-child(even){
+  flex-direction: row-reverse;
+}
+
+.project-text{
+  flex:1 1 52%;
+}
+
+.project-text h3{
+  margin:0 0 6px;
+  font-size:20px;
+}
+
+.project-text p{
+  margin:0;
+  color:var(--muted);
+}
+
+/* Right-side image box */
+.project-media{
+  flex:0 0 40%;
+  max-width:480px;
+}
+
+.project-media .thumb{
+  aspect-ratio:16/9;
+  border-radius:12px;
+  overflow:hidden;
+  background:#222;
+}
+
+.project-media .thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+/* Mobile: stack vertically (no alternation) */
+@media (max-width: 760px){
+  .project-row{ flex-direction: column; align-items: stretch; }
+  .stack-list .project-row:nth-child(even){ flex-direction: column; }
+  .project-media{ flex-basis:auto; max-width:none; }
+}
+
+/* Thin separator line above selected sections */
+section.divided{
+  border-top: 1px solid var(--border);
+  padding-top: 18px;   /* space after the line */
+  margin-top: 24px;    /* space before the line */
+}
+
+/* Bigger titles just for Projects and Experience on the portfolio page */
+#projects h2,
+#experience h2{
+  font-size: clamp(22px, 2.9vw, 32px);
+  line-height: 1.2;
+}
+
+/* Title for leadership! */
+#x h2{
+  font-size: clamp(22px, 2.9vw, 32px);
+  line-height: 1.2;
+}
     

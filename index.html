@@ -9,15 +9,18 @@
   <script src="data.js"></script>
 </head>
 <body>
-  <header>
+  <!-- anchor for smooth "Home" scroll-to-top -->
+  <div id="top"></div>
+
+  <header id="site-header">
     <div class="brand">
       <div>
-        <strong id="name"></strong><br>
+        <strong id="name"></strong><br />
         <span id="tagline"></span>
       </div>
     </div>
     <nav>
-      <a href="index.html">Home</a>
+      <a href="/#top" class="home-link">Home</a>
       <a href="portfolio.html">Portfolio</a>
       <a href="extracurriculars.html">Extracurriculars</a>
       <a href="/#contact">Contact</a>
@@ -28,7 +31,7 @@
     <section id="hero" class="hero">
       <div class="hero-aside">
         <div class="hero-image">
-          <img id="hero-avatar" src="img/avatar.jpg" alt="Headshot of Kaitlin Calimbahin">
+          <img id="hero-avatar" src="img/avatar.jpg" alt="Headshot of Kaitlin Calimbahin" />
         </div>
         <div id="hero-contacts" class="hero-contacts plain"></div>
       </div>
@@ -38,7 +41,7 @@
         <h1 id="hero-title"></h1>
         <p id="about-text" class="about-in-hero"></p>
         <div class="row">
-          <a class="btn" href="resume.pdf">Download Résumé</a>
+          <a class="btn" href="resume.pdf">View Resume</a>
           <a href="portfolio.html">See projects ↗</a>
         </div>
       </div>
@@ -78,16 +81,13 @@
   <script>
     // helpers
     const setText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
-    const setHTML = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
     const setSrc  = (id, src)  => { const el = document.getElementById(id); if (el) el.src = src; };
 
     // icons (SVG)
     const mailSvg = `
       <svg class="icon" viewBox="0 0 16 16" aria-hidden="true">
-        <path fill="currentColor"
-              d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v.217L8 8.5 0 4.217V4z"/>
-        <path fill="currentColor"
-              d="M0 4.697v7.104A2 2 0 0 0 2 14h12a2 2 0 0 0 2-2.199V4.697L8 9.5 0 4.697z"/>
+        <path fill="currentColor" d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v.217L8 8.5 0 4.217V4z"/>
+        <path fill="currentColor" d="M0 4.697v7.104A2 2 0 0 0 2 14h12a2 2 0 0 0 2-2.199V4.697L8 9.5 0 4.697z"/>
       </svg>`;
     const liSvg = `
       <svg class="icon" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -112,7 +112,7 @@
     setText("hero-title", siteData.heroTitle);
     setText("about-text", siteData.about);
 
-    // contacts
+    // contacts (hero + bottom)
     const hc = document.getElementById("hero-contacts");
     if (hc) {
       hc.innerHTML = `
@@ -121,8 +121,7 @@
         </a>
         <a class="contact-link" href="${siteData.linkedinHref}" target="_blank" rel="noopener">
           ${liSvg}<span>LinkedIn</span>
-        </a>
-      `;
+        </a>`;
     }
     const cl = document.getElementById("contact-links");
     if (cl) {
@@ -133,8 +132,7 @@
         <span class="sep-bar"> | </span>
         <a class="contact-link" href="${siteData.linkedinHref}" target="_blank" rel="noopener">
           ${liSvg}<span>LinkedIn</span>
-        </a>
-      `;
+        </a>`;
     }
 
     // preview card builder
@@ -148,8 +146,7 @@
       a.innerHTML = `
         <div class="thumb"><img src="${img}" alt="${item.title}"></div>
         <h3>${item.title}</h3>
-        <p class="muted">${desc}</p>
-      `;
+        <p class="muted">${desc}</p>`;
       return a;
     }
 
@@ -168,10 +165,7 @@
       siteData.highlights.experience.forEach(id => {
         const e = siteData.experience.find(x => x.id === id);
         if (!e) return;
-        const card = makePreviewCard(
-          { ...e, desc: e.details, img: e.img, title: e.title, id: e.id },
-          "desc"
-        );
+        const card = makePreviewCard({ ...e, desc: e.details }, "desc");
         card.href = `portfolio.html#${e.id}`;
         eh.appendChild(card);
       });
@@ -183,14 +177,24 @@
       siteData.highlights.extracurriculars.forEach(id => {
         const x = siteData.extracurriculars.find(e => e.id === id);
         if (!x) return;
-        const card = makePreviewCard(
-          { ...x, desc: x.details, img: x.img, title: x.title, id: x.id },
-          "desc"
-        );
+        const card = makePreviewCard({ ...x, desc: x.details }, "desc");
         card.href = `extracurriculars.html#${x.id}`;
         xh.appendChild(card);
       });
     }
+
+    // Smooth-scroll to top if already on homepage when clicking "Home"
+    document.querySelectorAll('a.home-link').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const onHome = location.pathname === '/' ||
+                       location.pathname.endsWith('/index.html') ||
+                       location.pathname.endsWith('index.html');
+        if (onHome) {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
+    });
   </script>
 </body>
 </html>
