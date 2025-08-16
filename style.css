@@ -41,7 +41,7 @@
   --text:     var(--rose-950);   /* primary text */
   --muted:    var(--berry-800);  /* secondary text */
   --accent:   var(--rose-090);   /* links / buttons */
-  --border:   var(--rose-200);   /* dividers */
+  --border:   var(--rose-110);   /* dividers */
   --ring:     var(--rose-070);   /* focus/hover outlines */
 
   /* unchanged site constants */
