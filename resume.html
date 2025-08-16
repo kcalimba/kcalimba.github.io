@@ -6,29 +6,106 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Resume viewer" />
   <style>
+    /* ===== Full palette (from your boards) ===== */
     :root{
-      --bar-bg: #0b0c0f;       /* tweak to match your theme */
-      --bar-fg: #e7e9ee;
-      --accent: #0ea5e9;
+      --rose-950:#590D22;
+      --rose-900:#800F2F;
+      --rose-800:#A4133C;
+      --rose-700:#C9184A;
+      --rose-650:#E05780;
+
+      --rose-500:#FF4D6D;
+      --rose-450:#FF758F;
+      --rose-400:#FF8FA3;
+      --rose-350:#FF9EBB;
+      --rose-300:#FFB3C1;
+      --rose-250:#FFCCD5;
+      --rose-200:#FFC2D4;
+      --rose-150:#FFE0E9;
+      --rose-120:#FADDE1;
+      --rose-110:#FFC4D6;
+      --rose-105:#FFA6C1;
+      --rose-100:#FF87AB;
+      --rose-090:#FF5D8F;
+      --rose-080:#FF97B7;
+      --rose-070:#FFACC5;
+      --rose-060:#FFCAD4;
+      --rose-055:#F4ACB7;
+      --rose-050:#fff9f9;
+
+      --berry-700:#B9375E;
+      --berry-800:#8A2846;
+      --berry-900:#602437;
+      --berry-950:#522E38;
+      --berry-1000:#3a2128;
+      --berry-1010:#2b181d;
+
+      /* ===== THEME TOKENS (light is default) ===== */
+      --bar-bg:   var(--rose-060); /* header */
+      --bar-fg:   var(--rose-1000);
+      --accent:   var(--rose-700);
+      --page-bg:  var(--rose-050);
+      --frame-bg: var(--rose-050); /* pdf viewer background */
+      --border:   var(--rose-105);
+      --focus:    var(--rose-080);
+
+      /* general */
+      --radius:12px;
     }
+
+    /* Dark mode using only your palette (+ white text) */
+    :root[data-theme="dark"]{
+      --bar-bg:   var(--rose-900);
+      --bar-fg:   #fff9f9;
+      --accent:   var(--rose-070);
+      --page-bg:  var(--rose-1010);
+      --frame-bg: var(--berry-1010);
+      --border:   var(--berry-1000);
+      --focus:    var(--rose-080);
+    }
+
     html,body{height:100%;margin:0}
-    body{display:flex;flex-direction:column;background:#000}
+    body{
+      display:flex;flex-direction:column;
+      background:var(--page-bg);
+    }
+
     .topbar{
       display:flex;align-items:center;gap:12px;
       padding:10px 14px;
       background:var(--bar-bg);color:var(--bar-fg);
       font:500 15px/1.3 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
       position:sticky;top:0;z-index:1;
-      border-bottom:1px solid rgba(255,255,255,.12);
+      border-bottom:1px solid var(--border);
     }
     .topbar a{
-      color:var(--accent);text-decoration:none;font-weight:600;
+      color:var(--accent);text-decoration:none;font-weight:600
     }
-    .topbar a:hover{ text-decoration:underline; }
-    iframe{
-      flex:1 1 auto;width:100%;height:100%;border:0;background:#111;
+    .topbar a:hover{ text-decoration:underline }
+
+    /* Fill remaining screen height reliably on mobile */
+    iframe{width:100%;border:0;background:var(--frame-bg);height:100vh}
+    @supports (height: 100dvh){ iframe{height:100dvh} }
+    @supports (-webkit-touch-callout: none){ iframe{min-height:-webkit-fill-available} }
+
+    /* Sun/Moon button: no circle/border, big tap target */
+    .icon-btn{
+      margin-left:auto;
+      background:transparent;border:0;cursor:pointer;
+      color:var(--bar-fg);
+      padding:6px;          /* tap area */
+      width:36px;height:36px;
+      display:inline-flex;align-items:center;justify-content:center;
+      border-radius:8px;    /* just for focus ring rounding */
     }
-    @media (max-width: 480px){ .topbar{flex-wrap:wrap;gap:8px} }
+    .icon-btn:hover{ color:var(--accent); }
+    .icon-btn:focus-visible{
+      outline:2px solid var(--focus);
+      outline-offset:2px;
+    }
+    .icon-btn svg{ width:22px;height:22px; display:block; }
+
+    @media (max-width:480px){ .topbar{flex-wrap:wrap;gap:8px} }
   </style>
 </head>
 <body>
@@ -36,6 +113,9 @@
     <span>Kaitlin Calimbahin - Resume</span>
     <span aria-hidden="true">·</span>
     <a href="/resume.pdf" download>Download PDF</a>
+
+    <!-- theme toggle -->
+    <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle theme" title="Toggle theme"></button>
   </div>
 
   <!-- In-browser PDF preview; user can download from the link above or the viewer UI -->
@@ -47,5 +127,38 @@
       <a href="/resume.pdf" download>downloading the PDF</a>.
     </div>
   </noscript>
+
+  <script>
+    /* Sun / Moon (stroke icons, no outer circle) */
+    const ICON_SUN = `
+      <svg viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"></circle>
+        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+      </svg>`;
+    const ICON_MOON = `
+      <svg viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>`;
+
+    (function(){
+      const root = document.documentElement;
+      const btn  = document.getElementById('theme-toggle');
+
+      const prefersDark = () => window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const getTheme = () => localStorage.getItem('theme') || (prefersDark() ? 'dark' : 'light');
+      const apply = (t) => {
+        root.setAttribute('data-theme', t);
+        localStorage.setItem('theme', t);
+        btn.innerHTML = t === 'dark' ? ICON_MOON : ICON_SUN;
+        btn.title = t === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+        btn.setAttribute('aria-label', btn.title);
+      };
+
+      apply(getTheme());
+      btn.addEventListener('click', () => apply(getTheme() === 'dark' ? 'light' : 'dark'));
+    })();
+  </script>
 </body>
 </html>

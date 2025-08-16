@@ -54,5 +54,6 @@ const siteData = {
         details: "Organized demos and beginner workshops for student orgs and local schools.",
         img: "img/outreach.jpg" }
     ]
+
   };
   
