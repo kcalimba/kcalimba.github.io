@@ -5,10 +5,10 @@ const siteData = {
     name: "Kaitlin Calimbahin",
     tagline: "Electrical Engineering • University California, San Diego",
   
-    heroTitle: "Hi, I'm <span class='hero-name'>Kaitlin!</span> I build delightful hardware & intelligent systems.",
+    heroTitle: "Hi, I'm <span class='hero-name'>Kaitlin!</span> I build delightful hardware & robotic systems.",
     heroSubtitle: "",
     about:
-      "I'm an Eletrical Engineering undergraduate student at the University of California, San Diego with a focus on controls and embedded systems. I build interactive systems that turn ideas into experiences!",
+      "I'm an Eletrical Engineering undergraduate student at the University of California, San Diego with a focus on machine learning and controls. I build interactive systems that turn ideas into experiences!",
   
     emailHref: "mailto:kcalimbahin@ucsd.edu",
     linkedinHref: "https://www.linkedin.com/in/kaitlin-calimbahin",
