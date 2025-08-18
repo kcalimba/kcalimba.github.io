@@ -98,7 +98,7 @@ const siteData = {
       },
       {
         id: "empower",
-        title: "University of California, San Diego: EMPOWER Scholar",
+        title: "EMPOWER Scholar",
         details: "Selected as a low‑income transfer student for the NSF‑backed EMPOWER Scholars program at UC San Diego’s Jacobs School of Engineering, I received need‑based scholarship support, faculty and alumni mentoring, and summer research opportunities to advance my engineering career. On campus, I’ve worked to pay it forward by organizing peer study sessions, mentoring incoming transfer students, and helping run engineering events that bridge academic learning with hands-on experiences.",
         img: "/media/extracurriculars/empower.png",
         tune: {
