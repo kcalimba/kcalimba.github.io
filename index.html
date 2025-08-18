@@ -143,7 +143,10 @@
     setText("tagline", siteData.tagline);
     setText("name-footer", siteData.name);
     setText("year", new Date().getFullYear());
-    setText("hero-title", siteData.heroTitle);
+    // setText("hero-title", siteData.heroTitle);
+    const ht = document.getElementById("hero-title");
+    if (ht) ht.innerHTML = siteData.heroTitle;
+
     setText("about-text", siteData.about);
 
     /* contacts */

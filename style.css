@@ -253,4 +253,7 @@
     margin: 6px 0 10px;
   }
 
+  .hero-name { color: var(--accent); } /* or a specific color like #FF4D6D */
+
+
   

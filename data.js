@@ -5,10 +5,10 @@ const siteData = {
     name: "Kaitlin Calimbahin",
     tagline: "Electrical Engineering • University California, San Diego",
   
-    heroTitle: "I build delightful hardware & intelligent systems.",
+    heroTitle: "Hi, I'm <span class='hero-name'>Kaitlin!</span> I build delightful hardware & intelligent systems.",
     heroSubtitle: "",
     about:
-      "I'm an EE focused on controls and embedded systems. I like turning wild ideas into working, well-designed hardware—clean schematics, readable firmware, and thoughtful UX. Currently exploring mobile manipulation and haptics.",
+      "I'm an Eletrical Engineering undergraduate student at the University of California, San Diego with a focus on controls and embedded systems. I build interactive systems that turn ideas into experiences!",
   
     emailHref: "mailto:kcalimbahin@ucsd.edu",
     linkedinHref: "https://www.linkedin.com/in/kaitlin-calimbahin",
@@ -28,18 +28,18 @@ const siteData = {
       poster: "media/projects/pinball.png"},
 
       { id: "haptic-glove", title: "Haptic Glove for Teleoperation",
-        desc: "Force-feedback glove tested in a peg-in-hole study; reduced task time vs visual-only.",
+        desc: "Collaborated with a multidisciplinary team to develop a haptic glove that renders 2D directional forces on each finger for realistic interaction in teleoperation and VR.",
         img:  "img/haptic.png",
         category: "academic" },
 
-      { id: "kitty-robot",  title: "Autonomous Kitty Robot",
-        desc: "Obstacle-avoiding bot with expressive OLED eyes, ultrasonic sensing, and adaptive behaviors.",
+      { id: "kitty-robot",  title: "Face Recognition Study Buddy Robot",
+        desc: "Designed an interactive robot companion to help students stay focused by using computer vision to detect phone usage and presence.",
         img:  "img/kitty.jpg",
         video:  "media/projects/kitty-robot.mp4",   // <-- add
         poster: "media/projects/kitty-robot.png"},    // <-- add (first frame) },
   
       { id: "ironman",  title: "Motorized Iron Man Helmet",
-        desc: "3D-printed moving lenses with IR gesture control and low-latency servo actuation.",
+        desc: "Developed a 3D-printed Iron Man helmet powered by servos, dual relays, and switches to control a motorized faceplate and LED eyes. ",
         img:  "img/spider.jpg",
         video:  "media/projects/ironman.mp4",
         poster: "media/projects/ironman.png" },
@@ -52,19 +52,19 @@ const siteData = {
     ],
   
     experience: [
-      { id: "robotics-lead", title: "Advanced Robotics and Control Lab <br>– Electronics Team",
-        details: "Owned motor control stack (Teensy + FOC); mentored 5 teammates; cut bring-up time by 40%.",
+      { id: "robotics-lead", title: "Advanced Robotics and Control Lab – Electronics Team",
+        details: "Collaborated with lab partners to develop a multi-fingered haptic glove capable of rendering 2D directional forces on each finger, enabling users to realistically perceive interactions such as slip, shear, and probing during teleoperation and virtual environments.",
         img: "img/robotics.jpg" },
-      { id: "ng-intern", title: "Northrop Grumman <br>– Systems Engineer Intern",
-      details: "Automated hardware validation (Python) adopted in field workflows; collaborated with a 25-person team.",
+      { id: "ng-intern", title: "Northrop Grumman – Systems Engineer Intern",
+      details: "Collaborated with multiple engineering teams on the BACN program, developing an automated hardware checkout script that streamlined validation procedures, reduced manual testing time, and supported system integration efforts across hardware and software components.",
       img: "img/ng.jpg" }
     ],
   
     extracurriculars: [
       {
         id: "tea",
-        title: "Themed Entertainment Association (TEA) <br>– Technical Director",
-        details: "Organized demos and beginner workshops for student orgs and local schools.",
+        title: "Themed Entertainment Association (TEA) – Technical Director",
+        details: "Collaborated closely with the creative team to design and build technical elements for student showcases while translating creative concepts into functional prototypes.",
         // Fallback image (used if posterLeft is missing)
         img: "/media/extracurriculars/tea1.png",
     
@@ -88,8 +88,8 @@ const siteData = {
       },
       {
         id: "ieee",
-        title: "Institute of Electrical and Electronics Engineers (IEEE) <br>– Technical Lead",
-        details: "Supported design/bring-up for autonomous underwater vehicle electronics.",
+        title: "Institute of Electrical and Electronics Engineers (IEEE) – Technical Lead",
+        details: "Led workshops on electronics and programming, to help students build technical skills through hands-on projects, in addition to coordinating outreach events with local community college students to better prepare them on a path towards engineering.",
         img: "/media/extracurriculars/outreach1.png",
         tune: {
           percent: 110,
@@ -98,8 +98,8 @@ const siteData = {
       },
       {
         id: "empower",
-        title: "UCSD EMPOWER Scholar",
-        details: "Add details here",
+        title: "University of California, San Diego: EMPOWER Scholar",
+        details: "Selected as a low‑income transfer student for the NSF‑backed EMPOWER Scholars program at UC San Diego’s Jacobs School of Engineering, I received need‑based scholarship support, faculty and alumni mentoring, and summer research opportunities to advance my engineering career. On campus, I’ve worked to pay it forward by organizing peer study sessions, mentoring incoming transfer students, and helping run engineering events that bridge academic learning with hands-on experiences.",
         img: "/media/extracurriculars/empower.png",
         tune: {
           percent: 85,

@@ -143,38 +143,38 @@
     /* ---------- This page’s own content (won’t affect index.html) ---------- */
     const PORTFOLIO_PROJECTS = [
       { id:"pinball",     title:"Star Wars: Pinball Machine",
-        desc:"Custom build with interactive features and themed artwork.",
+        desc:"This fully functional pinball machine was designed and built with a Star Wars theme, featuring a laser-cut plywood playfield and 3D-printed components such as flippers, bumpers, and themed features. An Arduino Mega controlled custom circuitry that powered lights, sounds, and mechanics, including a “hyperspace lever” automated launch system. Interactive elements like an AT-AT bumper, a spinning R2-D2, and a glowing Death Star created an immersive gameplay experience that blended engineering with storytelling.",
         poster:"/media/projects/pinball.png",
         video:"/media/projects/pinball.mp4"
       },
-      { id:"kitty-robot", title:"Autonomous Kitty Robot",
-        desc:"Obstacle-avoiding bot with expressive OLED eyes, ultrasonic sensing, and adaptive behaviors.",
+      { id:"kitty-robot", title:"Face Recognition Study Buddy Robot",
+        desc:"The Study Buddy Kitty was designed to help students stay focused by reacting to their behavior in playful, expressive ways. Using an ESP32 camera module and computer vision, the robot detected when a student was present or distracted by their phone, responding with joy, saddness, or anger shown on its OLED screen and expressed by its servo driven tail movements. A motion sensor allowed it to “feel” petting, turning the robot into a supportive study companion that encouraged productivity through interaction.",
         poster:"/media/projects/kitty-robot.png",
         video:"/media/projects/kitty-robot.mp4"
       },
+      { id:"spider-mask", title:"Dynamic Spider-Man Mask",
+      desc:"This project recreated Spider-Man’s expressive eyes through a 3D-printed mask with mechanical lenses that widened and squinted. Infrared sensors inside the mask detected user input, which controlled servos through an Arduino Nano smoothly adjust the lenses in real time. The result was a wearable mask that captured the dynamic personality of the superhero without the need for external switches.",
+      poster:"/media/projects/spider-mask.png",
+      video:"/media/projects/spider-mask.mp4"
+      },
       { id:"ironman",     title:"Motorized Iron Man Helmet",
-        desc:"3D-printed moving lenses with IR gesture control and low-latency servo actuation.",
+        desc:"This project involved creating a 3D-printed Iron Man helmet with a motorized faceplate and LED eyes, built entirely as an analog system without code or a microcontroller. The mechanism used servos, relays, and switches to control both the motion of the faceplate and the LED functionality. Through calulcated circuit design and analysis, the helmet's LED eyes are safely at it's brightest while ensuring reliable and smooth servo operation.",
         poster:"/media/projects/ironman.png",
         video:"/media/projects/ironman1.mp4"
       },
-      { id:"spider-mask", title:"Dynamic Spider-Man Mask",
-        desc:"Expressive eyes/lid mechanics and motion control.",
-        poster:"/media/projects/spider-mask.png",
-        video:"/media/projects/spider-mask.mp4"
-      }
     ];
 
     const EXPERIENCE_ITEMS = [
       { id:"robotics-lead",
-        title:"Advanced Robotics and Control Lab <br>– Electronics Team",
-        subtitle:"Project: Motor Control Stack & FOC Bring-up",
-        details:"Owned motor control stack (Teensy + FOC); mentored 5 teammates; cut bring-up time by 40%.",
+        title:"Advanced Robotics and Control Lab – Electronics Team",
+        subtitle:"Project: Haptic Glove N2D",
+        details:"The Haptic Glove N2D was designed to be the first multi-finger glove capable of rendering 2D directional forces, allowing users to feel slip, shear, and probing during teleoperation and VR. Using compact linkages, gimbal motors with encoders, and a Teensy 4.1 for high-frequency control, the glove delivers more realistic and precise feedback than traditional 1D systems.",
         poster:"/media/projects/haptic-glove.png"
       },
       { id:"ng-intern",
-        title:"Northrop Grumman <br>– Systems Engineer Intern",
+        title:"Northrop Grumman – Systems Engineer Intern",
         subtitle:"Project: Automated Hardware Validation Suite",
-        details:"Automated hardware validation (Python) adopted in field workflows; collaborated with a 25-person team.",
+        details:"TAt Northrop Grumman, I developed an automated checkout script for the BACN program that replaced manual hardware validation steps. Working with a multidisciplinary team, I streamlined testing, improved reliability, and laid the groundwork for faster field deployment.",
         poster:"/media/experience/ng1.png"
       }
     ];
