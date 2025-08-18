@@ -7,6 +7,93 @@
   <meta name="description" content="Clubs, teams, and community work" />
   <link rel="stylesheet" href="style.css" />
   <script src="data.js"></script>
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" sizes="any" href="/img/icons/favicon.svg?v=1">
+  <link rel="icon" type="image/png" href="/img/icons/favicon-48.png">
+  <meta name="theme-color" content="#FFC2D4">
+
+  <!-- Portfolio-like spacing + per-card percent + independent poster/video tuning + two-frame support -->
+  <style>
+    :root{
+      --frame-basis: clamp(260px, 32vw, 460px); /* media column base width */
+      --media-scale: 1;                          /* global desktop percent; JS sets this */
+    }
+
+    .project-row{
+      display:flex;
+      gap:18px;
+      align-items:center;
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow:var(--shadow);
+    }
+    .project-row .project-text{ flex:1 1 auto; }
+    .project-row .project-media{
+      /* Per-card scale with --card-scale; else fall back to --media-scale */
+      flex: 0 0 calc(var(--frame-basis) * var(--card-scale, var(--media-scale)));
+    }
+
+    /* Base frame */
+    .project-media .thumb{
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      background: #222;
+      aspect-ratio: 16/9;   /* overridden per-frame in JS */
+      width: 100%;
+    }
+
+    /* Two frames side-by-side when item has a video (stack on mobile) */
+    .project-media .thumb-pair{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      width: 100%;
+    }
+    .thumb-pair .thumb{ width: 100%; }
+
+    /* Layers */
+    .thumb img,
+    .thumb video{
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
+
+    /* Poster tuning */
+    .thumb img.poster{
+      object-position: var(--poster-x, 50%) var(--poster-y, 50%);
+      transform-origin: var(--poster-x, 50%) var(--poster-y, 50%);
+      transform: scale(var(--poster-zoom, 1));
+    }
+
+    /* Video poster underlay + video tuning */
+    .thumb img.video-overlay,
+    .thumb video.clip{
+      object-position: var(--video-x, 50%) var(--video-y, 50%);
+      transform-origin: var(--video-x, 50%) var(--video-y, 50%);
+      transform: scale(var(--video-zoom, 1));
+    }
+    .thumb video.clip{
+      opacity: 0; transition: opacity .18s ease;
+      pointer-events: none;
+    }
+    /* Fade/Play on hover/focus of the whole card */
+    .project-row:hover .thumb[data-kind="video"] video.clip,
+    .project-row:focus-within .thumb[data-kind="video"] video.clip{
+      opacity: 1;
+    }
+
+    /* Mobile */
+    @media (max-width: 900px){
+      .project-row{ flex-direction: column; align-items: stretch; }
+      .project-row .project-media{ flex: 0 0 auto; width: 100%; }
+      :root{ --media-scale: 1; } /* full width on small screens */
+      .project-media .thumb-pair{ grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -37,21 +124,115 @@
   <footer>© <span id="year"></span> <span id="name-footer"></span></footer>
 
   <script>
+    /* header/footer text */
     const setText=(id,t)=>{const el=document.getElementById(id); if(el) el.textContent=t;}
-    setText("name", siteData.name); setText("tagline", siteData.tagline);
-    setText("name-footer", siteData.name); document.getElementById("year").textContent=new Date().getFullYear();
+    setText("name", siteData.name);
+    setText("tagline", siteData.tagline);
+    setText("name-footer", siteData.name);
+    document.getElementById("year").textContent=new Date().getFullYear();
+
+    /* ===== Global percent shrink for THIS PAGE (desktop) ===== */
+    const GLOBAL_MEDIA = { percent: 85 }; // e.g., 85% like portfolio
+    document.documentElement.style.setProperty('--media-scale', GLOBAL_MEDIA.percent/100);
+
+    /* ===== Tuning helpers (independent poster/video like portfolio) ===== */
+    function applyPosterTuning(thumb, tune){
+      if (!thumb || !tune) return;
+      const p = tune.poster || tune; // backward-compat: allow {ratio,x,y,zoom} at root
+      if (p.ratio) thumb.style.aspectRatio = p.ratio;
+      if (p.x)     thumb.style.setProperty('--poster-x', p.x);
+      if (p.y)     thumb.style.setProperty('--poster-y', p.y);
+      if (p.zoom)  thumb.style.setProperty('--poster-zoom', p.zoom);
+    }
+    function applyVideoTuning(thumb, tune){
+      if (!thumb || !tune) return;
+      const v = tune.video || {};
+      if (v.ratio) thumb.style.aspectRatio = v.ratio;
+      if (v.x)     thumb.style.setProperty('--video-x', v.x);
+      if (v.y)     thumb.style.setProperty('--video-y', v.y);
+      if (v.zoom)  thumb.style.setProperty('--video-zoom', v.zoom);
+    }
+    function applySize(mediaEl, tune){
+      if (!mediaEl || !tune) return;
+      if (typeof tune.percent === 'number'){
+        mediaEl.style.setProperty('--card-scale', tune.percent/100);
+      } else {
+        mediaEl.style.removeProperty('--card-scale'); // falls back to global
+      }
+      if (tune.width){
+        mediaEl.style.setProperty('--frame-basis', tune.width);
+      } else {
+        mediaEl.style.removeProperty('--frame-basis');
+      }
+    }
 
     const placeholder="img/placeholder.jpg";
+
     function makeRow(item){
       const row=document.createElement("article"); row.className="project-row"; row.id=item.id;
+
       const text=document.createElement("div"); text.className="project-text";
+      /* titles may contain <br> — insert as HTML */
       text.innerHTML=`<h3>${item.title}</h3><p>${item.details||""}</p>`;
+
       const media=document.createElement("div"); media.className="project-media";
-      const img=item.img||placeholder; media.innerHTML=`<div class="thumb"><img src="${img}" alt="${item.title}"></div>`;
-      row.appendChild(text); row.appendChild(media); return row;
+
+      if (item.video){
+        /* Two-frame card (left still + right video w/ its own poster) */
+        const leftSrc  = item.posterLeft || item.img || placeholder;
+        const rightImg = item.videoPoster || leftSrc;
+
+        media.innerHTML = `
+          <div class="thumb-pair">
+            <div class="thumb" data-kind="poster" aria-label="${item.title} poster">
+              <img class="poster" src="${leftSrc}" alt="${item.title}">
+            </div>
+            <div class="thumb" data-kind="video" aria-label="${item.title} video">
+              <img class="video-overlay" src="${rightImg}" alt="" aria-hidden="true">
+              <video class="clip" muted playsinline loop preload="metadata">
+                <source src="${item.video}" type="video/mp4">
+              </video>
+            </div>
+          </div>`;
+      } else {
+        /* Single-frame card */
+        const img=item.img||placeholder;
+        media.innerHTML=`<div class="thumb" data-kind="poster"><img class="poster" src="${img}" alt="${item.title}"></div>`;
+      }
+
+      row.appendChild(text); row.appendChild(media);
+
+      /* Per-card tuning */
+      const tune = item.tune || {};
+      applySize(media, tune);
+
+      if (item.video){
+        const [leftThumb, rightThumb] = media.querySelectorAll('.thumb');
+        applyPosterTuning(leftThumb, tune);  // poster.*
+        applyVideoTuning(rightThumb, tune);  // video.*
+
+        // Hover play/pause for the video frame
+        const vid = rightThumb.querySelector('video.clip');
+        if (vid){
+          const play  = () => vid.play().catch(()=>{});
+          const pause = () => vid.pause();
+          row.addEventListener('mouseenter', play);
+          row.addEventListener('mouseleave', pause);
+          row.addEventListener('focusin',    play);
+          row.addEventListener('focusout',   pause);
+          document.addEventListener('visibilitychange', () => { if (document.hidden) vid.pause(); });
+        }
+      } else {
+        applyPosterTuning(media.querySelector('.thumb'), tune);
+      }
+
+      return row;
     }
+
     const wrap=document.getElementById("x-list");
-    siteData.extracurriculars.forEach(item=>wrap.appendChild(makeRow(item)));
+
+    /* Render items (now entirely from data.js) */
+    (siteData.extracurriculars || []).forEach(item => wrap.appendChild(makeRow(item)));
 
     /* theme toggle */
     const ICON_SUN=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>`;
@@ -64,6 +245,7 @@
       apply(getTheme()); btn.addEventListener('click',()=>apply(getTheme()==='dark'?'light':'dark'));
     })();
 
+    /* Smooth scroll to top when clicking Home while on homepage */
     document.querySelectorAll('a.home-link').forEach(a=>{
       a.addEventListener('click',e=>{
         const onHome=location.pathname==='/'||location.pathname.endsWith('/index.html')||location.pathname.endsWith('index.html');

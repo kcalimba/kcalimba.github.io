@@ -5,34 +5,41 @@
   <title>Resume – Kaitlin Calimbahin</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Resume viewer" />
+
+  <link rel="icon" type="image/svg+xml" sizes="any" href="/img/icons/favicon.svg?v=1">
+  <link rel="icon" type="image/png" href="/img/icons/favicon-48.png">
+  <meta name="theme-color" content="#FFC2D4">
+
   <style>
-    /* ===== Full palette (from your boards) ===== */
+    /* ============================================================
+       COLOR PALETTE (full list so you can pick easily)
+       ============================================================ */
     :root{
-      --rose-950:#590D22;
-      --rose-900:#800F2F;
-      --rose-800:#A4133C;
-      --rose-700:#C9184A;
-      --rose-650:#E05780;
-
-      --rose-500:#FF4D6D;
-      --rose-450:#FF758F;
-      --rose-400:#FF8FA3;
-      --rose-350:#FF9EBB;
-      --rose-300:#FFB3C1;
-      --rose-250:#FFCCD5;
-      --rose-200:#FFC2D4;
-      --rose-150:#FFE0E9;
-      --rose-120:#FADDE1;
-      --rose-110:#FFC4D6;
-      --rose-105:#FFA6C1;
-      --rose-100:#FF87AB;
-      --rose-090:#FF5D8F;
-      --rose-080:#FF97B7;
-      --rose-070:#FFACC5;
-      --rose-060:#FFCAD4;
-      --rose-055:#F4ACB7;
+      /* Rose */
       --rose-050:#fff9f9;
+      --rose-060:#FFCAD4;
+      --rose-070:#FFACC5;
+      --rose-080:#FF97B7;
+      --rose-090:#FF5D8F;
+      --rose-100:#FF87AB;
+      --rose-105:#FFA6C1;
+      --rose-110:#FFC4D6;
+      --rose-120:#FADDE1;
+      --rose-150:#FFE0E9;
+      --rose-200:#FFC2D4;
+      --rose-250:#FFCCD5;
+      --rose-300:#FFB3C1;
+      --rose-350:#FF9EBB;
+      --rose-400:#FF8FA3;
+      --rose-450:#FF758F;
+      --rose-500:#FF4D6D;
+      --rose-650:#E05780;
+      --rose-700:#C9184A;
+      --rose-800:#A4133C;
+      --rose-900:#800F2F;
+      --rose-950:#590D22;
 
+      /* Berry / deep neutrals */
       --berry-700:#B9375E;
       --berry-800:#8A2846;
       --berry-900:#602437;
@@ -40,105 +47,120 @@
       --berry-1000:#3a2128;
       --berry-1010:#2b181d;
 
-      /* ===== THEME TOKENS (light is default) ===== */
-      --bar-bg:   var(--rose-060); /* header */
-      --bar-fg:   var(--rose-1000);
-      --accent:   var(--rose-700);
-      --page-bg:  var(--rose-050);
-      --frame-bg: var(--rose-050); /* pdf viewer background */
-      --border:   var(--rose-105);
-      --focus:    var(--rose-080);
-
-      /* general */
-      --radius:12px;
+      /* ============================================================
+         THEME TOKENS — LIGHT MODE (defaults)
+         ============================================================ */
+      --bar-bg:   var(--rose-060);   /* header background */
+      --bar-fg:   var(--berry-1000); /* header text */
+      --accent:   var(--rose-700);   /* links / buttons */
+      --page-bg:  var(--rose-050);   /* page background */
+      --frame-bg: var(--rose-050);   /* PDF viewer background */
+      --border:   var(--rose-105);   /* dividers */
+      --focus:    var(--rose-080);   /* focus ring */
+      --radius:   12px;
     }
 
-    /* Dark mode using only your palette (+ white text) */
+    /* ============================================================
+       DARK MODE — EDIT THESE LINES TO RECOLOR DARK THEME QUICKLY
+       (pick any values from the palette above or your own hex)
+       ============================================================ */
     :root[data-theme="dark"]{
-      --bar-bg:   var(--rose-900);
+      --bar-bg:   var(--berry-950);
       --bar-fg:   #fff9f9;
       --accent:   var(--rose-070);
-      --page-bg:  var(--rose-1010);
+      --page-bg:  var(--berry-1010);
       --frame-bg: var(--berry-1010);
       --border:   var(--berry-1000);
       --focus:    var(--rose-080);
     }
 
+    /* ===== Structure & components ===== */
     html,body{height:100%;margin:0}
     body{
-      display:flex;flex-direction:column;
+      display:flex;
+      flex-direction:column;
       background:var(--page-bg);
+      color:var(--bar-fg);
+      font:500 15px/1.3 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
     }
 
     .topbar{
       display:flex;align-items:center;gap:12px;
       padding:10px 14px;
-      background:var(--bar-bg);color:var(--bar-fg);
-      font:500 15px/1.3 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+      background:var(--bar-bg);
+      color:var(--bar-fg);
       position:sticky;top:0;z-index:1;
       border-bottom:1px solid var(--border);
     }
     .topbar a{
-      color:var(--accent);text-decoration:none;font-weight:600
+      color:var(--accent);
+      text-decoration:none;
+      font-weight:600;
     }
     .topbar a:hover{ text-decoration:underline }
 
     /* Fill remaining screen height reliably on mobile */
-    iframe{width:100%;border:0;background:var(--frame-bg);height:100vh}
+    iframe{
+      width:100%;
+      border:0;
+      background:var(--frame-bg);
+      height:100vh;
+    }
     @supports (height: 100dvh){ iframe{height:100dvh} }
     @supports (-webkit-touch-callout: none){ iframe{min-height:-webkit-fill-available} }
 
-    /* Sun/Moon button: no circle/border, big tap target */
+    /* Sun/Moon button */
     .icon-btn{
       margin-left:auto;
       background:transparent;border:0;cursor:pointer;
       color:var(--bar-fg);
-      padding:6px;          /* tap area */
-      width:36px;height:36px;
-      display:inline-flex;align-items:center;justify-content:center;
-      border-radius:8px;    /* just for focus ring rounding */
+      padding:6px; width:36px; height:36px;
+      display:inline-flex; align-items:center; justify-content:center;
+      border-radius:8px;
     }
-    .icon-btn:hover{ color:var(--accent); }
+    .icon-btn:hover{ color:var(--accent) }
     .icon-btn:focus-visible{
       outline:2px solid var(--focus);
       outline-offset:2px;
     }
-    .icon-btn svg{ width:22px;height:22px; display:block; }
+    .icon-btn svg{ width:22px; height:22px; display:block }
 
-    @media (max-width:480px){ .topbar{flex-wrap:wrap;gap:8px} }
+    @media (max-width:480px){
+      .topbar{flex-wrap:wrap;gap:8px}
+    }
   </style>
 </head>
 <body>
   <div class="topbar">
     <span>Kaitlin Calimbahin - Resume</span>
     <span aria-hidden="true">·</span>
-    <a href="/resume.pdf" download>Download PDF</a>
 
-    <!-- theme toggle -->
+    <!-- Update this path to where your file actually lives -->
+    <a href="/resume/Kaitlin_Calimbahin_Resume.pdf"
+       download="Kaitlin_Calimbahin_Resume.pdf">Download PDF</a>
+
     <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle theme" title="Toggle theme"></button>
   </div>
 
-  <!-- In-browser PDF preview; user can download from the link above or the viewer UI -->
-  <iframe src="/resume.pdf" title="Resume PDF"></iframe>
+  <!-- Update this path to match the link above -->
+  <iframe src="/resume/Kaitlin_Calimbahin_Resume.pdf" title="Resume PDF"></iframe>
 
   <noscript>
     <div class="topbar" style="position:static">
       Your browser may not display PDFs inline. Try
-      <a href="/resume.pdf" download>downloading the PDF</a>.
+      <a href="/resume/Kaitlin_Calimbahin_Resume.pdf"
+         download="Kaitlin_Calimbahin_Resume.pdf">downloading the PDF</a>.
     </div>
   </noscript>
 
   <script>
-    /* Sun / Moon (stroke icons, no outer circle) */
-    const ICON_SUN = `
-      <svg viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    const ICON_SUN =
+      `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="12" cy="12" r="4"></circle>
         <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
       </svg>`;
-    const ICON_MOON = `
-      <svg viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    const ICON_MOON =
+      `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
       </svg>`;
 

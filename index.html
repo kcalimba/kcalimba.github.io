@@ -7,6 +7,45 @@
   <meta name="description" id="site-desc" />
   <link rel="stylesheet" href="style.css" />
   <script src="data.js"></script>
+
+  <link rel="icon" type="image/svg+xml" sizes="any" href="/img/icons/favicon.svg?v=1">
+  <link rel="icon" type="image/png" href="/img/icons/favicon-48.png">
+  <meta name="theme-color" content="#FFC2D4">
+
+  <!-- Independent tuning for poster & video -->
+  <style>
+    .preview-card .thumb{
+      aspect-ratio: var(--frame-ratio, 16/9);
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      background: #000;
+      margin-bottom: 10px;
+    }
+    .thumb .poster,
+    .thumb .clip{
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    /* Poster tuning */
+    .thumb .poster{
+      object-position: var(--poster-x, 50%) var(--poster-y, 50%);
+      transform-origin: var(--poster-x, 50%) var(--poster-y, 50%);
+      transform: scale(var(--poster-zoom, 1));
+    }
+    /* Video tuning */
+    .thumb .clip{
+      object-position: var(--video-x, 50%) var(--video-y, 50%);
+      transform-origin: var(--video-x, 50%) var(--video-y, 50%);
+      transform: scale(var(--video-zoom, 1));
+      opacity: 0; transition: opacity .18s ease;
+      pointer-events: none;
+    }
+    .preview-card:hover .thumb .clip,
+    .preview-card:focus-within .thumb .clip{ opacity: 1; }
+  </style>
 </head>
 <body>
   <div id="top"></div>
@@ -31,7 +70,7 @@
     <section id="hero" class="hero">
       <div class="hero-aside">
         <div class="hero-image">
-          <img id="hero-avatar" src="img/avatar.jpg" alt="Headshot of Kaitlin Calimbahin" />
+          <img id="hero-avatar" class="avatar-tune" src="/img/avatar.jpg" alt="Headshot of Kaitlin Calimbahin" />
         </div>
         <div id="hero-contacts" class="hero-contacts plain"></div>
       </div>
@@ -80,7 +119,7 @@
     const setText = (id, t) => { const el = document.getElementById(id); if (el) el.textContent = t; };
     const setSrc  = (id, s) => { const el = document.getElementById(id); if (el) el.src = s; };
 
-    /* icons for contact */
+    /* icons */
     const mailSvg = `
       <svg class="icon" viewBox="0 0 16 16" aria-hidden="true">
         <path fill="currentColor" d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v.217L8 8.5 0 4.217V4z"/>
@@ -122,18 +161,160 @@
         <a class="contact-link" href="${siteData.linkedinHref}" target="_blank" rel="noopener">${liSvg}<span>LinkedIn</span></a>`;
     }
 
-    /* preview card builder */
-    const placeholder = "img/placeholder.jpg";
+    /* ================= Media sources (projects) ================= */
+    const MEDIA = {
+      "haptic-glove": { poster: "/media/projects/haptic-glove.png", video: "/media/projects/haptic-glove.mp4" },
+      "kitty-robot":  { poster: "/media/projects/kitty-robot.png",  video: "/media/projects/kitty-robot.mp4" },
+      "ironman":      { poster: "/media/projects/ironman.png",      video: "/media/projects/ironman.mp4" }
+    };
+
+    /* ========= Per-card tuning (projects) ========= */
+    const MEDIA_TUNING = {
+      "haptic-glove": { ratio:"16 / 12",
+        poster:{ x:"50%", y:"50%", zoom:1.00 },
+        video: { x:"52%", y:"48%", zoom:1.06 }
+      },
+      "kitty-robot":  { ratio:"16 / 17",
+        poster:{ x:"1%",  y:"40%", zoom:1.35 },
+        video: { x:"1%",  y:"40%", zoom:1.35 }
+      },
+      "ironman":      { ratio:"15 / 16",
+        poster:{ x:"50%", y:"30%", zoom:1.00 },
+        video: { x:"50%", y:"60%", zoom:1.15 }
+      }
+    };
+
+    /* ================= Media sources (experience photos) ================= */
+    const EXP_MEDIA = {
+      "robotics-lead": { poster: "/media/experience/arclab.png" },
+      "ng-intern":     { poster: "/media/experience/ng.png" }
+    };
+
+    /* ========= Per-card tuning (experience photos) ========= */
+    const EXP_TUNING = {
+      "robotics-lead": { ratio:"16 / 9", poster:{ x:"50%", y:"100%", zoom:1.00 } },
+      "ng-intern":     { ratio:"16 / 9", poster:{ x:"50%", y:"50%",  zoom:1.15 } }
+    };
+
+    /* ================= Media sources (extracurricular photos) ================= */
+    const EXTRA_MEDIA = {
+      "ieee": { poster: "/media/extracurriculars/ieee.png" },
+      "tea":  { poster: "/media/extracurriculars/tea.png"  }
+    };
+
+    /* ========= Per-card tuning (extracurricular photos) ========= */
+    const EXTRA_TUNING = {
+      "ieee": { ratio:"16 / 9", poster:{ x:"5%", y:"50%", zoom:1.05 } },
+      "tea":  { ratio:"16 / 9", poster:{ x:"55%", y:"100%", zoom:1.50 } }
+    };
+
+    function applyTuning(thumb, tuning){
+      if (!thumb || !tuning) return;
+      if (tuning.ratio) thumb.style.aspectRatio = tuning.ratio;
+
+      const p = tuning.poster || {};
+      const v = tuning.video  || {};
+
+      // Poster variables
+      if (p.x)    thumb.style.setProperty('--poster-x', p.x);
+      if (p.y)    thumb.style.setProperty('--poster-y', p.y);
+      if (p.zoom) thumb.style.setProperty('--poster-zoom', p.zoom);
+
+      // Video variables (only used by projects that have video)
+      if (v.x)    thumb.style.setProperty('--video-x', v.x);
+      if (v.y)    thumb.style.setProperty('--video-y', v.y);
+      if (v.zoom) thumb.style.setProperty('--video-zoom', v.zoom);
+    }
+
+    /* =============== Card builder (poster + hover video for projects) =============== */
     function makePreviewCard(item, descKey="desc"){
       const a = document.createElement("a");
       a.className = "preview-card";
       a.href = `portfolio.html#${item.id}`;
-      const img = item.img || placeholder;
-      const desc = item[descKey] || "";
+
+      const cfg = MEDIA[item.id];
+      let mediaHTML;
+      if (cfg) {
+        mediaHTML = `
+          <div class="thumb">
+            <img class="poster" src="${cfg.poster}" alt="${item.title}">
+            <video class="clip" muted playsinline loop preload="metadata">
+              <source src="${cfg.video}" type="video/mp4">
+            </video>
+          </div>`;
+      } else {
+        mediaHTML = `<div class="thumb"><img class="poster" src="${item.img}" alt="${item.title}"></div>`;
+      }
+
       a.innerHTML = `
-        <div class="thumb"><img src="${img}" alt="${item.title}"></div>
+        ${mediaHTML}
         <h3>${item.title}</h3>
-        <p class="muted">${desc}</p>`;
+        <p class="muted">${item[descKey] || ""}</p>
+      `;
+
+      // Apply project tuning
+      applyTuning(a.querySelector('.thumb'), MEDIA_TUNING[item.id]);
+
+      // Hover/focus: play/pause (resumes where paused)
+      const vid = a.querySelector('video.clip');
+      if (vid) {
+        const play  = () => vid.play().catch(()=>{});
+        const pause = () => vid.pause();
+        a.addEventListener('mouseenter', play);
+        a.addEventListener('mouseleave', pause);
+        a.addEventListener('focusin',    play);
+        a.addEventListener('focusout',   pause);
+        document.addEventListener('visibilitychange', () => { if (document.hidden) vid.pause(); });
+      }
+
+      return a;
+    }
+
+    /* =============== Card builder (experience photos only) =============== */
+    function makeExperienceCard(item){
+      const a = document.createElement("a");
+      a.className = "preview-card";
+      a.href = `portfolio.html#${item.id}`;
+
+      const cfg = EXP_MEDIA[item.id];
+      const mediaHTML = `
+        <div class="thumb">
+          <img class="poster" src="${cfg ? cfg.poster : item.img}" alt="${item.title}">
+        </div>`;
+
+      a.innerHTML = `
+        ${mediaHTML}
+        <h3>${item.title}</h3>
+        <p class="muted">${item.details || ""}</p>
+      `;
+
+      // Apply experience tuning
+      applyTuning(a.querySelector('.thumb'), EXP_TUNING[item.id]);
+
+      return a;
+    }
+
+    /* =============== Card builder (extracurricular photos only) =============== */
+    function makeExtracurricularCard(item){
+      const a = document.createElement("a");
+      a.className = "preview-card";
+      a.href = `extracurriculars.html#${item.id}`;
+
+      const cfg = EXTRA_MEDIA[item.id];
+      const mediaHTML = `
+        <div class="thumb">
+          <img class="poster" src="${cfg ? cfg.poster : item.img}" alt="${item.title}">
+        </div>`;
+
+      a.innerHTML = `
+        ${mediaHTML}
+        <h3>${item.title}</h3>
+        <p class="muted">${item.details || ""}</p>
+      `;
+
+      // Apply extracurricular tuning
+      applyTuning(a.querySelector('.thumb'), EXTRA_TUNING[item.id]);
+
       return a;
     }
 
@@ -152,25 +333,21 @@
       siteData.highlights.experience.forEach(id => {
         const e = siteData.experience.find(x => x.id === id);
         if (!e) return;
-        const card = makePreviewCard({ ...e, desc:e.details }, "desc");
-        card.href = `portfolio.html#${e.id}`;
-        eh.appendChild(card);
+        eh.appendChild(makeExperienceCard(e));
       });
     }
 
-    /* extracurriculars */
+    /* extracurriculars (now uses /media/extracurriculars/*.png + tuning) */
     const xh = document.getElementById("extracurriculars-highlights");
     if (xh && siteData.highlights?.extracurriculars) {
       siteData.highlights.extracurriculars.forEach(id => {
         const x = siteData.extracurriculars.find(e => e.id === id);
         if (!x) return;
-        const card = makePreviewCard({ ...x, desc:x.details }, "desc");
-        card.href = `extracurriculars.html#${x.id}`;
-        xh.appendChild(card);
+        xh.appendChild(makeExtracurricularCard(x));
       });
     }
 
-    /* Sun/Moon theme toggle (shared) */
+    /* Theme toggle */
     const ICON_SUN = `
       <svg viewBox="0 0 24 24" fill="none"
         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

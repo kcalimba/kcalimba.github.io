@@ -7,6 +7,91 @@
   <meta name="description" content="Projects and experience" />
   <link rel="stylesheet" href="style.css" />
   <script src="data.js"></script>
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" sizes="any" href="/img/icons/favicon.svg?v=1">
+  <link rel="icon" type="image/png" href="/img/icons/favicon-48.png">
+  <meta name="theme-color" content="#FFC2D4">
+
+  <!-- Per-page layout + media sizing/tuning -->
+  <style>
+    /* Global sizing knobs for this page only */
+    :root{
+      /* Base media column width (keeps aspect via .thumb aspect-ratio) */
+      --frame-basis: clamp(260px, 32vw, 460px);
+      /* Global scale for all cards (1 = 100%, 0.85 = 85%) – set by JS too */
+      --media-scale: 1;
+    }
+
+    /* Make portfolio rows flex so we can size the media column per-card */
+    .project-row{
+      display:flex;             /* override site grid for this page */
+      gap:18px;
+      align-items:center;
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow:var(--shadow);
+    }
+    .project-row .project-text{ flex:1 1 auto; }
+    .project-row .project-media{
+      /* Per-card scale overrides with --card-scale; otherwise uses global */
+      flex: 0 0 calc(var(--frame-basis) * var(--card-scale, var(--media-scale)));
+    }
+
+    /* Media frame + layers */
+    .project-media .thumb{
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      background: #222;
+      aspect-ratio: 16 / 9;   /* default; each card can override via JS */
+      width: 100%;
+    }
+    .project-media .thumb img,
+    .project-media .thumb video{
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
+    /* Poster tuning */
+    .project-media .thumb .poster{
+      object-position: var(--poster-x, 50%) var(--poster-y, 50%);
+      transform-origin: var(--poster-x, 50%) var(--poster-y, 50%);
+      transform: scale(var(--poster-zoom, 1));
+    }
+    /* Video tuning */
+    .project-media .thumb .clip{
+      object-position: var(--video-x, 50%) var(--video-y, 50%);
+      transform-origin: var(--video-x, 50%) var(--video-y, 50%);
+      transform: scale(var(--video-zoom, 1));
+      opacity: 0; transition: opacity .18s ease;
+      pointer-events: none;
+    }
+    /* Reveal video on hover/focus (like index.html) */
+    .project-row:hover .thumb .clip,
+    .project-row:focus-within .thumb .clip{ opacity: 1; }
+
+    /* Subtitle (same color as title, size between title/body) */
+    .project-text p.project-subtitle{
+      color: var(--text);
+      font-weight: 600;
+      font-size: clamp(1.05em, 1.4vw, 1.15em);
+      line-height: 1.35;
+      margin: 6px 0 10px;
+    }
+
+    /* Mobile: stack and use full width (ignore scales so it stays readable) */
+    @media (max-width: 900px){
+      .project-row{ flex-direction: column; align-items: stretch; }
+      .project-row .project-media{
+        flex: 0 0 auto;
+        width: 100%;
+      }
+      /* On small screens, make global scale 1 (full width) */
+      :root{ --media-scale: 1; }
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -42,43 +127,202 @@
   <footer>© <span id="year"></span> <span id="name-footer"></span></footer>
 
   <script>
-    // -------- header/footer text --------
+    /* ---------- Header/footer text ---------- */
     const setText=(id,t)=>{const el=document.getElementById(id); if(el) el.textContent=t;}
     setText("name", siteData.name);
     setText("tagline", siteData.tagline);
     setText("name-footer", siteData.name);
     document.getElementById("year").textContent=new Date().getFullYear();
 
-    // -------- row builder (stacked + alternating via CSS) --------
-    const placeholder="img/placeholder.jpg";
-    function makeRow(item, descKey="desc"){
-      const row=document.createElement("article");
-      row.className="project-row";
-      row.id=item.id;
+    /* ---------- Easy global percent knob (affects all cards by default) ---------- */
+    const GLOBAL_MEDIA = {
+      percent: 85   // ← Shrink all posters/videos/frames to this % on desktop (set 100 for full)
+    };
+    document.documentElement.style.setProperty('--media-scale', (GLOBAL_MEDIA.percent/100));
 
-      const text=document.createElement("div");
-      text.className="project-text";
-      text.innerHTML=`<h3>${item.title}</h3><p>${item[descKey]||""}</p>`;
+    /* ---------- This page’s own content (won’t affect index.html) ---------- */
+    const PORTFOLIO_PROJECTS = [
+      { id:"pinball",     title:"Star Wars: Pinball Machine",
+        desc:"Custom build with interactive features and themed artwork.",
+        poster:"/media/projects/pinball.png",
+        video:"/media/projects/pinball.mp4"
+      },
+      { id:"kitty-robot", title:"Autonomous Kitty Robot",
+        desc:"Obstacle-avoiding bot with expressive OLED eyes, ultrasonic sensing, and adaptive behaviors.",
+        poster:"/media/projects/kitty-robot.png",
+        video:"/media/projects/kitty-robot.mp4"
+      },
+      { id:"ironman",     title:"Motorized Iron Man Helmet",
+        desc:"3D-printed moving lenses with IR gesture control and low-latency servo actuation.",
+        poster:"/media/projects/ironman.png",
+        video:"/media/projects/ironman1.mp4"
+      },
+      { id:"spider-mask", title:"Dynamic Spider-Man Mask",
+        desc:"Expressive eyes/lid mechanics and motion control.",
+        poster:"/media/projects/spider-mask.png",
+        video:"/media/projects/spider-mask.mp4"
+      }
+    ];
 
-      const media=document.createElement("div");
-      media.className="project-media";
-      const img=item.img||placeholder;
-      media.innerHTML=`<div class="thumb"><img src="${img}" alt="${item.title}"></div>`;
+    const EXPERIENCE_ITEMS = [
+      { id:"robotics-lead",
+        title:"Advanced Robotics and Control Lab <br>– Electronics Team",
+        subtitle:"Project: Motor Control Stack & FOC Bring-up",
+        details:"Owned motor control stack (Teensy + FOC); mentored 5 teammates; cut bring-up time by 40%.",
+        poster:"/media/projects/haptic-glove.png"
+      },
+      { id:"ng-intern",
+        title:"Northrop Grumman <br>– Systems Engineer Intern",
+        subtitle:"Project: Automated Hardware Validation Suite",
+        details:"Automated hardware validation (Python) adopted in field workflows; collaborated with a 25-person team.",
+        poster:"/media/experience/ng1.png"
+      }
+    ];
 
-      row.appendChild(text);
-      row.appendChild(media);
+    /* ---------- Per-card tuning (aspect ratio + independent poster/video crop/zoom)
+         NEW: percent – per-card shrink override (e.g., 70 = 70%) 
+         (Optional) width – per-card base width instead of global --frame-basis
+       ------------------------------------------------------------------------ */
+    const TUNING = {
+      "haptic-glove": { ratio:"16 / 12",
+        percent: 95,                 // ← per-card size as % (optional)
+        poster:{ x:"50%", y:"50%", zoom:1.00 },
+        video: { x:"52%", y:"48%", zoom:1.00 }
+      },
+      "kitty-robot":  { ratio:"16 / 19",
+        percent: 80,
+        poster:{ x:"1%",  y:"40%", zoom:1.00 },
+        video: { x:"1%",  y:"40%", zoom:1.00 }
+      },
+      "ironman":      { ratio:"16 / 20",
+        percent: 70,
+        poster:{ x:"50%", y:"50%", zoom:1.00 },
+        video: { x:"50%", y:"50%", zoom:1.00 }
+      },
+      "pinball":      { ratio:"6 / 9",
+        percent: 75,
+        poster:{ x:"50%", y:"20%", zoom:1.00 },
+        video: { x:"50%", y:"20%", zoom:1.00 }
+      },
+      "spider-mask":  { ratio:"2 / 3",
+        percent: 75,
+        poster:{ x:"50%", y:"50%", zoom:1.00 },
+        video: { x:"50%", y:"50%", zoom:1.00 }
+      },
+
+      /* Experience */
+      "robotics-lead": { ratio:"16 / 12", percent: 90, poster:{ x:"50%", y:"60%", zoom:1.00 } },
+      "ng-intern":     { ratio:"19 / 10", percent: 100, poster:{ x:"50%", y:"50%",  zoom:1.00 } }
+    };
+
+    /* ---------- Helpers ---------- */
+    function applyThumbTuning(thumb, tune){
+      if (!thumb || !tune) return;
+      if (tune.ratio) thumb.style.aspectRatio = tune.ratio;
+
+      const p = tune.poster || {};
+      const v = tune.video  || {};
+
+      if (p.x)    thumb.style.setProperty('--poster-x', p.x);
+      if (p.y)    thumb.style.setProperty('--poster-y', p.y);
+      if (p.zoom) thumb.style.setProperty('--poster-zoom', p.zoom);
+
+      if (v.x)    thumb.style.setProperty('--video-x', v.x);
+      if (v.y)    thumb.style.setProperty('--video-y', v.y);
+      if (v.zoom) thumb.style.setProperty('--video-zoom', v.zoom);
+    }
+
+    function applySizeTuning(mediaEl, tune){
+      if (!mediaEl || !tune) return;
+      /* Per-card percent -> --card-scale (falls back to global if missing) */
+      if (typeof tune.percent === 'number'){
+        mediaEl.style.setProperty('--card-scale', (tune.percent/100));
+      } else {
+        mediaEl.style.removeProperty('--card-scale');
+      }
+      /* Optional fixed width override (rarely needed now) */
+      if (tune.width){
+        mediaEl.style.setProperty('--frame-basis', tune.width);
+      } else {
+        mediaEl.style.removeProperty('--frame-basis');
+      }
+    }
+
+    /* ---------- Row builders ---------- */
+    function makeProjectRow(item){
+      const row=document.createElement("article"); row.className="project-row"; row.id=item.id;
+
+      const text=document.createElement("div"); text.className="project-text";
+      text.innerHTML=`<h3>${item.title}</h3><p>${item.desc||""}</p>`;
+
+      const media=document.createElement("div"); media.className="project-media";
+      media.innerHTML = `
+        <div class="thumb">
+          <img class="poster" src="${item.poster}" alt="${item.title}">
+          ${item.video ? `
+            <video class="clip" muted playsinline loop preload="metadata">
+              <source src="${item.video}" type="video/mp4">
+            </video>` : ``}
+        </div>`;
+
+      row.appendChild(text); row.appendChild(media);
+
+      const tune = TUNING[item.id] || {};
+      applyThumbTuning(media.querySelector('.thumb'), tune);
+      applySizeTuning(media, tune);
+
+      /* Hover play/pause */
+      const vid = media.querySelector('video.clip');
+      if (vid){
+        const play  = () => vid.play().catch(()=>{});
+        const pause = () => vid.pause();
+        row.addEventListener('mouseenter', play);
+        row.addEventListener('mouseleave', pause);
+        row.addEventListener('focusin',    play);
+        row.addEventListener('focusout',   pause);
+        document.addEventListener('visibilitychange', () => { if (document.hidden) vid.pause(); });
+      }
+
       return row;
     }
 
-    // Render: projects & experience
-    siteData.projects.forEach(p =>
-      document.getElementById("projects-list").appendChild(makeRow(p,"desc"))
-    );
-    siteData.experience.forEach(e =>
-      document.getElementById("experience-list").appendChild(makeRow(e,"details"))
-    );
+    function makeExperienceRow(item){
+      const row=document.createElement("article"); row.className="project-row"; row.id=item.id;
 
-    // -------- Sun / Moon theme toggle (matches resume.html) --------
+      const text=document.createElement("div"); text.className="project-text";
+      text.innerHTML = `
+        <h3>${item.title}</h3>
+        ${item.subtitle ? `<p class="project-subtitle">${item.subtitle}</p>` : ``}
+        <p>${item.details || ""}</p>
+      `;
+
+      const media=document.createElement("div"); media.className="project-media";
+      media.innerHTML = `
+        <div class="thumb">
+          <img class="poster" src="${item.poster}" alt="${item.title}">
+          ${item.video ? `
+            <video class="clip" muted playsinline loop preload="metadata">
+              <source src="${item.video}" type="video/mp4">
+            </video>` : ``}
+        </div>`;
+
+      row.appendChild(text); row.appendChild(media);
+
+      const tune = TUNING[item.id] || {};
+      applyThumbTuning(media.querySelector('.thumb'), tune);
+      applySizeTuning(media, tune);
+
+      return row;
+    }
+
+    /* ---------- Render ---------- */
+    const projWrap = document.getElementById("projects-list");
+    PORTFOLIO_PROJECTS.forEach(p => projWrap.appendChild(makeProjectRow(p)));
+
+    const expWrap = document.getElementById("experience-list");
+    EXPERIENCE_ITEMS.forEach(e => expWrap.appendChild(makeExperienceRow(e)));
+
+    /* ---------- Theme toggle ---------- */
     const ICON_SUN = `
       <svg viewBox="0 0 24 24" fill="none"
            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -110,6 +354,14 @@
       apply(getTheme());
       btn.addEventListener('click', () => apply(getTheme() === 'dark' ? 'light' : 'dark'));
     })();
+
+    /* Smooth scroll to top when clicking Home while on homepage */
+    document.querySelectorAll('a.home-link').forEach(a=>{
+      a.addEventListener('click', (e)=>{
+        const onHome = location.pathname === '/' || location.pathname.endsWith('/index.html') || location.pathname.endsWith('index.html');
+        if (onHome){ e.preventDefault(); window.scrollTo({top:0, behavior:'smooth'}); }
+      });
+    });
   </script>
 </body>
 </html>
