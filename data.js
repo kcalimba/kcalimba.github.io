@@ -28,7 +28,7 @@ const siteData = {
       poster: "media/projects/pinball.png"},
 
       { id: "haptic-glove", title: "Haptic Glove for Teleoperation",
-        desc: "Collaborated with a multidisciplinary team to develop a haptic glove that renders 2D directional forces on each finger for realistic interaction in teleoperation and VR.",
+        desc: "Collaborated with a multidisciplinary team to develop a haptic glove for teleoperation and virtual world physical exploration, completing the immersiveness of virtual experiences.",
         img:  "img/haptic.png",
         category: "academic" },
 
