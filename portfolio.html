@@ -145,22 +145,26 @@
       { id:"pinball",     title:"Star Wars: Pinball Machine",
         desc:"This fully functional pinball machine was designed and built with a Star Wars theme, featuring a laser-cut plywood and acrylic playfield with 3D-printed components such as flippers, bumpers, and themed features. An Arduino Mega controlled custom circuitry that powered lights, sounds, and mechanics, including a “hyperspace lever” automated launch system. Interactive elements like an AT-AT bumper, a spinning R2-D2, and a glowing Death Star created an immersive gameplay experience that blended engineering with storytelling.",
         poster:"/media/projects/pinball.png",
-        video:"/media/projects/pinball.mp4"
+        video:"/media/projects/pinball.mp4",
+        demo:"demo.html?id=pinball"
       },
       { id:"kitty-robot", title:"Face Recognition Study Buddy Robot",
         desc:"The Study Buddy Kitty was designed to help students stay focused by reacting to their behavior in playful, expressive ways. Using an ESP32 Camera module, supervised learning, and computer vision, the robot detects when a student was present or distracted by their phone, responding with joy, saddness, or anger shown on its OLED screen and expressed by its servo driven tail movements. A motion sensor allowed it to “feel” petting, turning the robot into a supportive study companion that encouraged productivity through interaction.",
         poster:"/media/projects/kitty-robot.png",
-        video:"/media/projects/kitty-robot.mp4"
+        video:"/media/projects/kitty-robot.mp4",
+        demo:"demo.html?id=kitty-robot"
       },
       { id:"spider-mask", title:"Dynamic Spider-Man Mask",
       desc:"This project recreated Spider-Man’s expressive eyes through a 3D-printed mask with mechanical lenses that widened and squinted. Infrared sensors inside the mask detected user input, which controlled servos through an Arduino Nano smoothly adjust the lenses in real time. The result was a wearable mask that captured the dynamic personality of the superhero without the need for external switches.",
       poster:"/media/projects/spider-mask.png",
-      video:"/media/projects/spider-mask.mp4"
+      video:"/media/projects/spider-mask.mp4",
+      demo:"demo.html?id=spider-mask",
       },
       { id:"ironman",     title:"Motorized Iron Man Helmet",
         desc:"This project involved creating a 3D-printed Iron Man helmet with a motorized faceplate and LED eyes, built entirely as an analog system without code or a microcontroller. The mechanism used servos, relays, and switches to control both the motion of the faceplate and the LED functionality. Through calulcated circuit design and analysis, the helmet's LED eyes are safely at it's brightest while ensuring reliable and smooth servo operation.",
         poster:"/media/projects/ironman.png",
-        video:"/media/projects/ironman1.mp4"
+        video:"/media/projects/ironman1.mp4",
+        demo:"demo.html?id=ironman"
       },
     ];
 
@@ -251,10 +255,13 @@
     /* ---------- Row builders ---------- */
     function makeProjectRow(item){
       const row=document.createElement("article"); row.className="project-row"; row.id=item.id;
-
+    
       const text=document.createElement("div"); text.className="project-text";
-      text.innerHTML=`<h3>${item.title}</h3><p>${item.desc||""}</p>`;
-
+      const demoLink = item.demo
+        ? `<p style="margin-top:10px"><a class="btn" href="${item.demo}">Watch full demo ↗</a></p>`
+        : ``;
+      text.innerHTML=`<h3>${item.title}</h3><p>${item.desc||""}</p>${demoLink}`;
+    
       const media=document.createElement("div"); media.className="project-media";
       media.innerHTML = `
         <div class="thumb">
@@ -264,14 +271,13 @@
               <source src="${item.video}" type="video/mp4">
             </video>` : ``}
         </div>`;
-
+    
       row.appendChild(text); row.appendChild(media);
-
+    
       const tune = TUNING[item.id] || {};
       applyThumbTuning(media.querySelector('.thumb'), tune);
       applySizeTuning(media, tune);
-
-      /* Hover play/pause */
+    
       const vid = media.querySelector('video.clip');
       if (vid){
         const play  = () => vid.play().catch(()=>{});
@@ -282,9 +288,9 @@
         row.addEventListener('focusout',   pause);
         document.addEventListener('visibilitychange', () => { if (document.hidden) vid.pause(); });
       }
-
+    
       return row;
-    }
+    }    
 
     function makeExperienceRow(item){
       const row=document.createElement("article"); row.className="project-row"; row.id=item.id;

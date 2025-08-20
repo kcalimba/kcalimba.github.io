@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Project Demo – Kaitlin Calimbahin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Full demo video" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="data.js"></script>
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/svg+xml" sizes="any" href="/img/icons/favicon.svg?v=1">
+  <link rel="icon" type="image/png" href="/img/icons/favicon-48.png">
+  <meta name="theme-color" content="#FFC2D4">
+
+  <style>
+    /* Page-specific layout (keeps your theme tokens) */
+    .demo-wrap{
+      max-width: 1100px;
+      margin: 24px auto;
+      padding: 0 16px;
+    }
+    .demo-player{
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .demo-header{
+      display:flex; align-items:center; justify-content:space-between;
+      gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--border);
+    }
+    .demo-header h1{
+      margin:0; font-size: clamp(18px, 2.2vw, 24px);
+    }
+    .demo-video{
+      width: 100%; height: auto; aspect-ratio: 16/9; background: #000;
+      display:block;
+    }
+    .demo-meta{
+      padding: 12px 16px; color: var(--muted);
+    }
+    .back-link{ margin: 16px 0; display: inline-flex; gap: 6px; align-items: center; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div><strong id="name"></strong><br /><span id="tagline"></span></div>
+    </div>
+    <nav>
+      <a href="/#top" class="home-link">Home</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="extracurriculars.html">Extracurriculars</a>
+      <a href="/#contact">Contact</a>
+      <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle theme" title="Toggle theme"></button>
+    </nav>
+  </header>
+
+  <main class="demo-wrap">
+    <a class="back-link" href="portfolio.html">← Back to Portfolio</a>
+
+    <div class="demo-player">
+      <div class="demo-header">
+        <h1 id="demo-title">Project Demo</h1>
+        <a id="download-link" class="btn" href="#" download>Download video</a>
+      </div>
+      <video id="demo-video" class="demo-video" controls playsinline preload="metadata" poster="">
+        <!-- src set by JS -->
+        Sorry, your browser doesn’t support the video tag.
+      </video>
+      <div id="demo-desc" class="demo-meta"></div>
+    </div>
+  </main>
+
+  <footer>© <span id="year"></span> <span id="name-footer"></span></footer>
+
+  <script>
+    /* ---- Put your consts right here ---- */
+    const DEMO_BASE = "/demo/";   // folder where the .mp4 files live
+    const DEMO_FILES = {
+      // Only needed when filename != <id>.mp4
+       "ironman": "ironman5.mp4",
+       "kitty-robot": "kitty_robot1.mp4",
+       "spider-mask": "spider-mask1.mp4",
+       "pinball": "pinball1.mp4"
+    };
+
+    /* ---- Rest of your init code goes below ---- */
+    function getParam(name){
+      const m = new URLSearchParams(location.search).get(name);
+      return m ? decodeURIComponent(m) : null;
+    }
+
+    (function initDemo(){
+      const id = getParam('id');
+      const proj = (siteData.projects || []).find(p => p.id === id) || {};
+
+      const titleEl = document.getElementById('demo-title');
+      const descEl  = document.getElementById('demo-desc');
+      const videoEl = document.getElementById('demo-video');
+      const dlEl    = document.getElementById('download-link');
+
+      const title = proj.title || "Project Demo";
+      document.title = `${title} – Demo`;
+      if (titleEl) titleEl.textContent = title;
+      if (descEl && proj.desc) descEl.textContent = proj.desc;
+
+      const mapped = id && DEMO_FILES[id] ? (DEMO_BASE + DEMO_FILES[id]) : null;
+      const guess  = id ? (DEMO_BASE + id + ".mp4") : null;
+      const videoSrc = mapped || guess || proj.video;
+      const posterSrc = proj.poster || proj.img || `/media/projects/${id||"poster"}.png`;
+
+      if (!videoSrc){
+        videoEl.outerHTML = `<div style="padding:16px">No demo video found for “${title}”.</div>`;
+        if (dlEl) dlEl.remove();
+        return;
+      }
+
+      const source = document.createElement('source');
+      source.src = videoSrc; source.type = "video/mp4";
+      videoEl.appendChild(source);
+      if (posterSrc) videoEl.setAttribute('poster', posterSrc);
+
+      if (dlEl){
+        dlEl.href = videoSrc;
+        dlEl.download = title.replace(/\s+/g,'_') + "_Demo.mp4";
+      }
+    })();
+        /* ---- Header/footer text (same as other pages) ---- */
+    (function(){
+        const setText=(id,t)=>{const el=document.getElementById(id); if(el) el.textContent=t;};
+        setText("name", siteData.name);
+        setText("tagline", siteData.tagline);
+        setText("name-footer", siteData.name);
+        const y=document.getElementById("year"); if (y) y.textContent = new Date().getFullYear();
+    })();
+    
+    /* ---- Sun/Moon theme toggle (matches the rest of the site) ---- */
+    const ICON_SUN = `
+        <svg viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"></circle>
+        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+        </svg>`;
+    const ICON_MOON = `
+        <svg viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>`;
+    
+    (function(){
+        const root = document.documentElement;
+        const btn  = document.getElementById('theme-toggle');
+        if (!btn) return;
+    
+        const prefersDark = () => window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const getTheme    = () => localStorage.getItem('theme') || (prefersDark() ? 'dark' : 'light');
+    
+        function apply(theme){
+        root.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        const isDark = theme === 'dark';
+        btn.innerHTML = isDark ? ICON_MOON : ICON_SUN;
+        btn.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+        btn.title = isDark ? 'Switch to light mode' : 'Switch to dark mode';
+        }
+    
+        apply(getTheme());
+        btn.addEventListener('click', () => apply(getTheme() === 'dark' ? 'light' : 'dark'));
+    })();  
+  </script> 
+</body>
+</html>

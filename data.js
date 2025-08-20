@@ -22,7 +22,7 @@ const siteData = {
     // Tag projects with category: "personal" or "academic"
     projects: [
       { id: "pinball", title: "Star Wars: Pinball Machine",
-      desc: "Force-feedback glove tested in a peg-in-hole study; reduced task time vs visual-only.",
+      desc: "A custom, fully functional Star Wars–themed pinball machine with a laser-cut playfield and 3D-printed mechanisms. An Arduino Mega drives lights, sounds, and features like a hyperspace auto-launcher, AT-AT bumper, spinning R2-D2, and glowing Death Star.",
       img:  "img/pinball.png",
       video:  "media/projects/pinball.mp4",   // <-- add
       poster: "media/projects/pinball.png"},
@@ -33,19 +33,19 @@ const siteData = {
         category: "academic" },
 
       { id: "kitty-robot",  title: "Face Recognition Study Buddy Robot",
-        desc: "Designed an interactive robot companion to help students stay focused by using computer vision to detect phone usage and presence.",
+        desc: "An ESP32-CAM cat study-buddy that uses supervised machine learning and computer vision to detect people versus phones while reacting in real time. Expressive OLED eyes and a servo-driven tail reflect emotions, with motion sensors for “petting” interactions.",
         img:  "img/kitty.jpg",
         video:  "media/projects/kitty-robot.mp4",   // <-- add
         poster: "media/projects/kitty-robot.png"},    // <-- add (first frame) },
   
       { id: "ironman",  title: "Motorized Iron Man Helmet",
-        desc: "Developed a 3D-printed Iron Man helmet powered by servos, dual relays, and switches to control a motorized faceplate and LED eyes. ",
+        desc: "A 3D-printed helmet with a motorized faceplate and bright LED eyes, driven entirely by an analog circuit featuring a relay, switches, and servos. Power and control were tuned for smooth faceplate motion and maximum safe LED brightness.",
         img:  "img/spider.jpg",
         video:  "media/projects/ironman.mp4",
         poster: "media/projects/ironman.png" },
 
       { id: "spider-mask", title: "Dynamic Spider-Man Mask",
-      desc: "Force-feedback glove tested in a peg-in-hole study; reduced task time vs visual-only.",
+      desc: "A 3D-printed mask with mechanical eye shutters that widen and squint for expressive motion. An Arduino Nano and infrared sensors coordinate smooth servo actuation for real-time user exppression.",
       img:  "img/glove.jpg",
       video:  "media/projects/spider-mask.mp4",   // <-- add
       poster: "media/projects/spider-mask.png"},
