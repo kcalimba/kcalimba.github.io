@@ -21,35 +21,50 @@ const siteData = {
   
     // Tag projects with category: "personal" or "academic"
     projects: [
-      { id: "pinball", title: "Star Wars: Pinball Machine",
-      desc: "A custom, fully functional Star Wars–themed pinball machine with a laser-cut playfield and 3D-printed mechanisms. An Arduino Mega drives lights, sounds, and features like a hyperspace auto-launcher, AT-AT bumper, spinning R2-D2, and glowing Death Star.",
-      img:  "img/pinball.png",
-      video:  "media/projects/pinball.mp4",   // <-- add
-      poster: "media/projects/pinball.png"},
-
-      { id: "haptic-glove", title: "Haptic Glove for Teleoperation",
-        desc: "Collaborated with a multidisciplinary team to develop a haptic glove for teleoperation and virtual world physical exploration, completing the immersiveness of virtual experiences.",
-        img:  "img/haptic.png",
-        category: "academic" },
-
-      { id: "kitty-robot",  title: "Face Recognition Study Buddy Robot",
-        desc: "An ESP32-CAM cat study-buddy that uses supervised machine learning and computer vision to detect people versus phones while reacting in real time. Expressive OLED eyes and a servo-driven tail reflect emotions, with motion sensors for “petting” interactions.",
-        img:  "img/kitty.jpg",
-        video:  "media/projects/kitty-robot.mp4",   // <-- add
-        poster: "media/projects/kitty-robot.png"},    // <-- add (first frame) },
-  
-      { id: "ironman",  title: "Motorized Iron Man Helmet",
-        desc: "A 3D-printed helmet with a motorized faceplate and bright LED eyes, driven entirely by an analog circuit featuring a relay, switches, and servos. Power and control were tuned for smooth faceplate motion and maximum safe LED brightness.",
-        img:  "img/spider.jpg",
-        video:  "media/projects/ironman.mp4",
-        poster: "media/projects/ironman.png" },
-
-      { id: "spider-mask", title: "Dynamic Spider-Man Mask",
-      desc: "A 3D-printed mask with mechanical eye shutters that widen and squint for expressive motion. An Arduino Nano and infrared sensors coordinate smooth servo actuation for real-time user exppression.",
-      img:  "img/glove.jpg",
-      video:  "media/projects/spider-mask.mp4",   // <-- add
-      poster: "media/projects/spider-mask.png"},
-    ],
+      {
+        id: "pinball",
+        title: "Star Wars: Pinball Machine",
+        homeDesc: "",
+        desc: "A custom, fully functional Star Wars–themed pinball machine with a laser-cut playfield and 3D-printed mechanisms. An Arduino Mega drives lights, sounds, and features like a hyperspace auto-launcher, AT-AT pop bumpers, a motorized spinning R2-D2, and glowing Death Star.",
+        img:  "img/pinball.png",
+        video: "media/projects/pinball.mp4",
+        poster:"media/projects/pinball.png"
+      },
+      {
+        id: "haptic-glove",
+        title: "Haptic Glove for Teleoperation",
+        homeDesc: "Collaborated with a multidisciplinary team to develop a haptic glove for teleoperation and virtual world physical exploration, completing the immersiveness of virtual experiences.",
+        desc: "",
+        img: "img/haptic.png",
+      },
+      {
+        id: "kitty-robot",
+        title: "Face Recognition Study Buddy Robot",
+        homeDesc: "Developed a robotic cat that uses machine learning and computer vision to tell when students are on their phones, responding with expressive emotions and tail movements to encourage students to stay focus and reduce distractions.",
+        desc: "A cat study-buddy robot that uses an ESP32 Camera module to implement a supervised machine learning algorithm and computer vision to detect people versus phones while reacting in real time. Expressive OLED eyes and a servo-driven tail reflect emotions, with motion sensors for “petting” interactions.",
+        img: "img/kitty.jpg",
+        video: "media/projects/kitty-robot.mp4",
+        poster:"media/projects/kitty-robot.png"
+      },
+      {
+        id: "ironman",
+        title: "Motorized Iron Man Helmet",
+        homeDesc: "Engineered a wearable Iron Man helmet featuring an analog control system that opens and closes the helmet's faceplate while LED eyes respond accordingly to the faceplate's position.",
+        desc: "A wearable 3D-printed Iron Man helmet with a motorized faceplate and LED eyes, driven entirely by an analog circuit featuring a relay, switches, and servos. Power and control were tuned for smooth faceplate motion and maximum safe LED brightness.",
+        img: "img/spider.jpg",
+        video:"media/projects/ironman.mp4",
+        poster:"media/projects/ironman.png"
+      },
+      {
+        id: "spider-mask",
+        title: "Dynamic Spider-Man Mask",
+        homeDesc: "",
+        desc: "A wearable 3D-printed Spider-Man mask with mechanical eyes that widen and squint to express motion based on user input. An Arduino Nano and dual infrared sensors coordinate smooth servo actuation and detect user input for real-time exppressions.",
+        img: "img/glove.jpg",
+        video:"media/projects/spider-mask.mp4",
+        poster:"media/projects/spider-mask.png"
+      }
+    ],    
   
     experience: [
       { id: "robotics-lead", title: "Advanced Robotics and Control Lab – Electronics Team",

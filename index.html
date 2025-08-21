@@ -326,7 +326,7 @@
     if (ph && siteData.highlights?.projects) {
       siteData.highlights.projects.forEach(id => {
         const p = siteData.projects.find(x => x.id === id);
-        if (p) ph.appendChild(makePreviewCard(p,"desc"));
+        if (p) ph.appendChild(makePreviewCard(p, "homeDesc"));
       });
     }
 
