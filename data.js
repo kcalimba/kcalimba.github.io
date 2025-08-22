@@ -67,7 +67,7 @@ const siteData = {
     ],    
   
     experience: [
-      { id: "robotics-lead", title: "Advanced Robotics and Control Lab – Electronics Team",
+      { id: "robotics-lead", title: "Advanced Robotics and Control Lab – Research Engineer Intern",
         details: "Collaborated with lab partners to develop a multi-fingered haptic glove capable of rendering 2D directional forces on each finger, enabling users to realistically perceive interactions such as slip, shear, and probing during teleoperation and virtual environments.",
         img: "img/robotics.jpg" },
       { id: "ng-intern", title: "Northrop Grumman – Systems Engineer Intern",
