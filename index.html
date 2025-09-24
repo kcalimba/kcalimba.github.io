@@ -43,8 +43,13 @@
       opacity: 0; transition: opacity .18s ease;
       pointer-events: none;
     }
+    /* default hover reveal for all cards */
     .preview-card:hover .thumb .clip,
     .preview-card:focus-within .thumb .clip{ opacity: 1; }
+
+    /* haptic-glove uses class-toggle, not hover */
+    .preview-card.no-hover-clip .thumb .clip { opacity: 0 !important; }
+    .preview-card.no-hover-clip.show-clip .thumb .clip { opacity: 1 !important; }
   </style>
 </head>
 <body>
@@ -143,7 +148,6 @@
     setText("tagline", siteData.tagline);
     setText("name-footer", siteData.name);
     setText("year", new Date().getFullYear());
-    // setText("hero-title", siteData.heroTitle);
     const ht = document.getElementById("hero-title");
     if (ht) ht.innerHTML = siteData.heroTitle;
 
@@ -173,10 +177,9 @@
 
     /* ========= Per-card tuning (projects) ========= */
     const MEDIA_TUNING = {
-      "haptic-glove": {   // Wider cinematic frame on homepage only
+      "haptic-glove": {
         ratio:"16 / 16",
         poster:{ x:"50%", y:"50%", zoom:1.00 },
-        // Slight punch-in on the video for a tighter crop
         video: { x:"50%", y:"20%", zoom:1.18 }
       },
       "kitty-robot":  { ratio:"16 / 17",
@@ -192,13 +195,13 @@
     /* ================= Media sources (experience photos) ================= */
     const EXP_MEDIA = {
       "robotics-lead": { poster: "/media/projects/haptic-glove3.png" },
-      "ng-intern":     { poster: "/media/experience/ng.png" }
+      "ng-intern":     { poster: "/media/experience/ng3.png" }
     };
 
     /* ========= Per-card tuning (experience photos) ========= */
     const EXP_TUNING = {
       "robotics-lead": { ratio:"16 / 10", poster:{ x:"50%", y:"50%", zoom:1.00 } },
-      "ng-intern":     { ratio:"16 / 9", poster:{ x:"50%", y:"50%",  zoom:1.15 } }
+      "ng-intern":     { ratio:"16 / 10", poster:{ x:"50%", y:"50%",  zoom:1.00 } }
     };
 
     /* ================= Media sources (extracurricular photos) ================= */
@@ -220,12 +223,10 @@
       const p = tuning.poster || {};
       const v = tuning.video  || {};
 
-      // Poster variables
       if (p.x)    thumb.style.setProperty('--poster-x', p.x);
       if (p.y)    thumb.style.setProperty('--poster-y', p.y);
       if (p.zoom) thumb.style.setProperty('--poster-zoom', p.zoom);
 
-      // Video variables (only used by projects that have video)
       if (v.x)    thumb.style.setProperty('--video-x', v.x);
       if (v.y)    thumb.style.setProperty('--video-y', v.y);
       if (v.zoom) thumb.style.setProperty('--video-zoom', v.zoom);
@@ -260,9 +261,35 @@
       // Apply project tuning
       applyTuning(a.querySelector('.thumb'), MEDIA_TUNING[item.id]);
 
-      // Hover/focus: play/pause (resumes where paused)
       const vid = a.querySelector('video.clip');
-      if (vid) {
+
+      if (item.id === 'haptic-glove' && vid){
+        // Disable default :hover reveal for this card
+        a.classList.add('no-hover-clip');
+
+        const show = () => {
+          a.classList.add('show-clip');
+          try { vid.currentTime = 0; } catch(e){}
+          vid.play().catch(()=>{});
+        };
+        const hide = () => {
+          vid.pause();
+          try { vid.currentTime = 0; } catch(e){}
+          a.classList.remove('show-clip');
+        };
+
+        a.addEventListener('mouseenter', show);
+        a.addEventListener('mouseleave', hide);
+        a.addEventListener('focusin',    show);
+        a.addEventListener('focusout',   hide);
+
+        // Reset when returning from PDF/tab
+        window.addEventListener('pageshow', hide);
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'hidden') hide();
+        });
+      } else if (vid){
+        // other cards: simple behavior
         const play  = () => vid.play().catch(()=>{});
         const pause = () => vid.pause();
         a.addEventListener('mouseenter', play);
@@ -271,27 +298,34 @@
         a.addEventListener('focusout',   pause);
         document.addEventListener('visibilitychange', () => { if (document.hidden) vid.pause(); });
       }
-            // --- Card footer actions for the Haptic Glove ---
-      // --- Card footer action for the Haptic Glove (paper only on HOME) ---
+
+      // --- Haptic Glove research paper link (home only) ---
       if (item.id === "haptic-glove") {
         const footer = document.createElement("div");
         footer.className = "row";
         footer.style.marginTop = "8px";
 
-        // Research paper PDF (new tab)
         const paperLink = document.createElement("a");
         paperLink.href = item.paper || "/papers/N2D_Haptic_Glove.pdf";
         paperLink.target = "_blank";
         paperLink.rel = "noopener";
         paperLink.textContent = "Research Paper (PDF) ↗";
 
+        paperLink.addEventListener('click', (e)=>{
+          e.stopPropagation();
+          const card = e.currentTarget.closest('.preview-card');
+          const v = card?.querySelector('video.clip');
+          if (v){
+            try{ v.pause(); v.currentTime = 0; }catch(e){}
+            card.classList.remove('show-clip');
+          }
+        });
+
         footer.appendChild(paperLink);
         a.appendChild(footer);
       }
 
-
-
-      return a;
+      return a;   /* ✅ CLOSE FUNCTION PROPERLY */
     }
 
     /* =============== Card builder (experience photos only) =============== */
@@ -312,9 +346,7 @@
         <p class="muted">${item.details || ""}</p>
       `;
 
-      // Apply experience tuning
       applyTuning(a.querySelector('.thumb'), EXP_TUNING[item.id]);
-
       return a;
     }
 
@@ -336,9 +368,7 @@
         <p class="muted">${item.details || ""}</p>
       `;
 
-      // Apply extracurricular tuning
       applyTuning(a.querySelector('.thumb'), EXTRA_TUNING[item.id]);
-
       return a;
     }
 
@@ -361,7 +391,7 @@
       });
     }
 
-    /* extracurriculars (now uses /media/extracurriculars/*.png + tuning) */
+    /* extracurriculars */
     const xh = document.getElementById("extracurriculars-highlights");
     if (xh && siteData.highlights?.extracurriculars) {
       siteData.highlights.extracurriculars.forEach(id => {
@@ -407,6 +437,15 @@
       a.addEventListener('click', (e)=>{
         const onHome = location.pathname === '/' || location.pathname.endsWith('/index.html') || location.pathname.endsWith('index.html');
         if (onHome){ e.preventDefault(); window.scrollTo({top:0, behavior:'smooth'}); }
+      });
+    });
+
+    /* Reset all preview videos when returning from a PDF/new tab */
+    window.addEventListener('pageshow', () => {
+      document.querySelectorAll('video.clip').forEach(v=>{
+        try{ v.pause(); v.currentTime = 0; }catch(e){}
+        const card = v.closest('.preview-card');
+        if (card) card.classList.remove('show-clip');
       });
     });
   </script>

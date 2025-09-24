@@ -72,7 +72,7 @@ const siteData = {
       {
         id: "robotics-lead",
         title: "Advanced Robotics and Control Lab – Research Engineer Intern",
-        details: "Collaborated with lab partners to develop a multi-fingered haptic glove capable of rendering 2D directional, enabling users to realistically perceive interactions such axial and transverse probing during robotic teleoperation and virtual reality environments.",
+        details: "Collaborated with lab partners to develop a multi-fingered haptic glove capable of rendering 2D directional force feedback, enabling users to realistically perceive interactions such axial and transverse probing during robotic teleoperation and virtual reality environments.",
         img: "img/robotics.jpg",
         projectId: "haptic-glove",              // used to route demo.html?id=...
         paper: "/papers/N2D_Haptic_Glove.pdf"  // update path if needed
