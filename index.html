@@ -166,16 +166,18 @@
 
     /* ================= Media sources (projects) ================= */
     const MEDIA = {
-      "haptic-glove": { poster: "/media/projects/haptic-glove.png", video: "/media/projects/haptic-glove.mp4" },
+      "haptic-glove": { poster: "/media/projects/haptic-glove1.png", video: "/media/projects/haptic-glove.mp4" },
       "kitty-robot":  { poster: "/media/projects/kitty-robot.png",  video: "/media/projects/kitty-robot.mp4" },
       "ironman":      { poster: "/media/projects/ironman.png",      video: "/media/projects/ironman.mp4" }
     };
 
     /* ========= Per-card tuning (projects) ========= */
     const MEDIA_TUNING = {
-      "haptic-glove": { ratio:"16 / 12",
+      "haptic-glove": {   // Wider cinematic frame on homepage only
+        ratio:"16 / 16",
         poster:{ x:"50%", y:"50%", zoom:1.00 },
-        video: { x:"52%", y:"48%", zoom:1.06 }
+        // Slight punch-in on the video for a tighter crop
+        video: { x:"50%", y:"20%", zoom:1.18 }
       },
       "kitty-robot":  { ratio:"16 / 17",
         poster:{ x:"1%",  y:"40%", zoom:1.35 },
@@ -189,13 +191,13 @@
 
     /* ================= Media sources (experience photos) ================= */
     const EXP_MEDIA = {
-      "robotics-lead": { poster: "/media/experience/arclab.png" },
+      "robotics-lead": { poster: "/media/projects/haptic-glove3.png" },
       "ng-intern":     { poster: "/media/experience/ng.png" }
     };
 
     /* ========= Per-card tuning (experience photos) ========= */
     const EXP_TUNING = {
-      "robotics-lead": { ratio:"16 / 9", poster:{ x:"50%", y:"100%", zoom:1.00 } },
+      "robotics-lead": { ratio:"16 / 10", poster:{ x:"50%", y:"50%", zoom:1.00 } },
       "ng-intern":     { ratio:"16 / 9", poster:{ x:"50%", y:"50%",  zoom:1.15 } }
     };
 
@@ -269,6 +271,25 @@
         a.addEventListener('focusout',   pause);
         document.addEventListener('visibilitychange', () => { if (document.hidden) vid.pause(); });
       }
+            // --- Card footer actions for the Haptic Glove ---
+      // --- Card footer action for the Haptic Glove (paper only on HOME) ---
+      if (item.id === "haptic-glove") {
+        const footer = document.createElement("div");
+        footer.className = "row";
+        footer.style.marginTop = "8px";
+
+        // Research paper PDF (new tab)
+        const paperLink = document.createElement("a");
+        paperLink.href = item.paper || "/papers/N2D_Haptic_Glove.pdf";
+        paperLink.target = "_blank";
+        paperLink.rel = "noopener";
+        paperLink.textContent = "Research Paper (PDF) ↗";
+
+        footer.appendChild(paperLink);
+        a.appendChild(footer);
+      }
+
+
 
       return a;
     }

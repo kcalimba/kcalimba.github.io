@@ -32,14 +32,16 @@ const siteData = {
       },
       {
         id: "haptic-glove",
-        title: "Haptic Glove for Teleoperation",
-        homeDesc: "Collaborated with a multidisciplinary team to develop a haptic glove for teleoperation and virtual world physical exploration, completing the immersiveness of virtual experiences.",
-        desc: "",
-        img: "img/haptic.png",
+        title: "The N2D Haptic Glove",
+        homeDesc: "Collaborated with a multidisciplinary team to develop a haptic glove for contact-rich robotic teleoperation and virtual reality to enhance the immersiveness of teleoperation and virtual experiences.",
+        desc: "The N2D Haptic Glove is a multi-finger glove capable of rendering 2D directional forces, allowing users to feel axial and transverse probing during teleoperation and virtual reality. Compact linkages, gimbal motors with encoders, and a Teensy 4.1 enable high-frequency control and realistic, precise feedback for contact-rich interaction.",
+        img: "media/projects/haptic-glove1.png",
+        paper: "/papers/Haptic_Glove_Paper.pdf",   // <-- update path if different
+        demo:  "/demo/haptic-glove.mp4"          // <-- optional: direct demo file
       },
       {
         id: "kitty-robot",
-        title: "Face Recognition Study Buddy Robot",
+        title: "Face Recognition Study Robot",
         homeDesc: "Developed a robotic cat that uses machine learning and computer vision to tell when students are on their phones, responding with expressive emotions and tail movements to encourage students to stay focus and reduce distractions.",
         desc: "A cat study-buddy robot that uses an ESP32 Camera module to implement a supervised machine learning algorithm and computer vision to detect people versus phones while reacting in real time. Expressive OLED eyes and a servo-driven tail reflect emotions, with motion sensors for “petting” interactions.",
         img: "img/kitty.jpg",
@@ -67,10 +69,15 @@ const siteData = {
     ],    
   
     experience: [
-      { id: "robotics-lead", title: "Advanced Robotics and Control Lab – Research Engineer Intern",
-        details: "Collaborated with lab partners to develop a multi-fingered haptic glove capable of rendering 2D directional forces on each finger, enabling users to realistically perceive interactions such as slip, shear, and probing during teleoperation and virtual environments.",
-        img: "img/robotics.jpg" },
-      { id: "ng-intern", title: "Northrop Grumman – Systems Engineer Intern",
+      {
+        id: "robotics-lead",
+        title: "Advanced Robotics and Control Lab – Research Engineer Intern",
+        details: "Collaborated with lab partners to develop a multi-fingered haptic glove capable of rendering 2D directional, enabling users to realistically perceive interactions such axial and transverse probing during robotic teleoperation and virtual reality environments.",
+        img: "img/robotics.jpg",
+        projectId: "haptic-glove",              // used to route demo.html?id=...
+        paper: "/papers/N2D_Haptic_Glove.pdf"  // update path if needed
+      },      
+      { id: "ng-intern", title: "Northrop Grumman – System Engineer Intern",
       details: "Collaborated with multiple engineering teams on the BACN program, developing an automated hardware checkout script that streamlined validation procedures, reduced manual testing time, and supported system integration efforts across hardware and software components.",
       img: "img/ng.jpg" }
     ],
