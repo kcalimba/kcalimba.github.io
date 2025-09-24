@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Publication – Kaitlin Calimbahin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Publication viewer" />
+
+  <link rel="icon" type="image/svg+xml" sizes="any" href="/img/icons/favicon.svg?v=1">
+  <link rel="icon" type="image/png" href="/img/icons/favicon-48.png">
+  <meta name="theme-color" content="#FFC2D4">
+
+  <style>
+    :root{
+      --bar-bg:#FFCAD4; --bar-fg:#3a2128; --accent:#C9184A;
+      --page-bg:#fff9f9; --frame-bg:#fff9f9; --border:#FFA6C1; --focus:#FF97B7; --radius:12px;
+    }
+    :root[data-theme="dark"]{
+      --bar-bg:#522E38; --bar-fg:#fff9f9; --accent:#FFACC5;
+      --page-bg:#2b181d; --frame-bg:#2b181d; --border:#3a2128; --focus:#FF97B7;
+    }
+    html,body{height:100%;margin:0}
+    body{
+      display:flex;flex-direction:column;background:var(--page-bg);color:var(--bar-fg);
+      font:500 15px/1.3 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+    }
+    .topbar{
+      display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--bar-bg);color:var(--bar-fg);
+      position:sticky;top:0;z-index:1;border-bottom:1px solid var(--border);
+    }
+    .topbar a{color:var(--accent);text-decoration:none;font-weight:600}
+    .topbar a:hover{text-decoration:underline}
+    .grow{flex:1}
+    .icon-btn{margin-left:8px;background:transparent;border:0;cursor:pointer;color:var(--bar-fg);
+      padding:6px;width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px}
+    .icon-btn:hover{color:var(--accent)}
+    .icon-btn:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+    .icon-btn svg{width:22px;height:22px;display:block}
+    iframe{width:100%;border:0;background:var(--frame-bg);height:100vh}
+    @supports (height: 100dvh){ iframe{height:100dvh} }
+    @supports (-webkit-touch-callout: none){ iframe{min-height:-webkit-fill-available} }
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <a id="back-link" href="/portfolio.html">← Back to Portfolio</a>
+    <span aria-hidden="true">·</span>
+    <span id="bar-title">Kaitlin Calimbahin – Publication</span>
+    <span class="grow"></span>
+    <a id="download-link" href="#" download>Download PDF</a>
+    <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle theme" title="Toggle theme"></button>
+  </div>
+
+  <iframe id="pdf-frame" src="" title="Publication PDF"></iframe>
+
+  <script>
+    // Icons
+    const ICON_SUN = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"></circle>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </svg>`;
+    const ICON_MOON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>`;
+
+    (function(){
+      // Parse query params
+      const qs = new URLSearchParams(location.search);
+      const srcParam   = qs.get('src') || '/papers/Haptic_Glove_Paper.pdf';
+      const backParam  = (qs.get('back') || '').toLowerCase();   // "home" | "portfolio" | ""
+      const titleParam = qs.get('title') || 'Kaitlin Calimbahin – Publication';
+
+      // Wire frame + download
+      const frame = document.getElementById('pdf-frame');
+      const dl    = document.getElementById('download-link');
+      frame.src = srcParam;
+      dl.href   = srcParam;
+      try { dl.download = (new URL(srcParam, location.href)).pathname.split('/').pop() || 'paper.pdf'; } catch(e){}
+
+      // Back button: param wins; else use referrer; else default to Portfolio
+      const backEl = document.getElementById('back-link');
+      function setBack(label, href){ backEl.textContent = `← ${label}`; backEl.href = href; }
+
+      if (backParam === 'home') {
+        setBack('Back to Homepage', '/#top');
+      } else if (backParam === 'portfolio') {
+        setBack('Back to Portfolio', '/portfolio.html');
+      } else {
+        const ref = document.referrer || '';
+        try {
+          const refUrl = new URL(ref, location.origin);
+          if (/\/portfolio\.html(\b|$)/.test(refUrl.pathname)) {
+            setBack('Back to Portfolio', '/portfolio.html');
+          } else if (refUrl.pathname === '/' || /\/index\.html$/.test(refUrl.pathname)) {
+            setBack('Back to Homepage', '/#top');
+          } else {
+            setBack('Back to Portfolio', '/portfolio.html');
+          }
+        } catch(_){
+          setBack('Back to Portfolio', '/portfolio.html');
+        }
+      }
+
+      // Title (keeps your name in header)
+      const titleEl = document.getElementById('bar-title');
+      titleEl.textContent = titleParam;
+      document.title = titleParam;
+
+      // Theme toggle
+      const root = document.documentElement;
+      const btn  = document.getElementById('theme-toggle');
+      const prefersDark = () => window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const getTheme = () => localStorage.getItem('theme') || (prefersDark() ? 'dark' : 'light');
+      const apply = (t) => {
+        root.setAttribute('data-theme', t);
+        localStorage.setItem('theme', t);
+        btn.innerHTML = t === 'dark' ? ICON_MOON : ICON_SUN;
+        btn.title = t === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+        btn.setAttribute('aria-label', btn.title);
+      };
+      apply(getTheme());
+      btn.addEventListener('click', () => apply(getTheme() === 'dark' ? 'light' : 'dark'));
+    })();
+  </script>
+</body>
+</html>

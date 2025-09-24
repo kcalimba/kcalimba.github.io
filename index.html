@@ -29,13 +29,11 @@
       object-fit: cover;
       display: block;
     }
-    /* Poster tuning */
     .thumb .poster{
       object-position: var(--poster-x, 50%) var(--poster-y, 50%);
       transform-origin: var(--poster-x, 50%) var(--poster-y, 50%);
       transform: scale(var(--poster-zoom, 1));
     }
-    /* Video tuning */
     .thumb .clip{
       object-position: var(--video-x, 50%) var(--video-y, 50%);
       transform-origin: var(--video-x, 50%) var(--video-y, 50%);
@@ -219,14 +217,11 @@
     function applyTuning(thumb, tuning){
       if (!thumb || !tuning) return;
       if (tuning.ratio) thumb.style.aspectRatio = tuning.ratio;
-
       const p = tuning.poster || {};
       const v = tuning.video  || {};
-
       if (p.x)    thumb.style.setProperty('--poster-x', p.x);
       if (p.y)    thumb.style.setProperty('--poster-y', p.y);
       if (p.zoom) thumb.style.setProperty('--poster-zoom', p.zoom);
-
       if (v.x)    thumb.style.setProperty('--video-x', v.x);
       if (v.y)    thumb.style.setProperty('--video-y', v.y);
       if (v.zoom) thumb.style.setProperty('--video-zoom', v.zoom);
@@ -299,33 +294,33 @@
         document.addEventListener('visibilitychange', () => { if (document.hidden) vid.pause(); });
       }
 
-      // --- Haptic Glove research paper link (home only) ---
+      // --- Haptic Glove research paper link (home only, opens NEW TAB) ---
       if (item.id === "haptic-glove") {
         const footer = document.createElement("div");
         footer.className = "row";
         footer.style.marginTop = "8px";
 
+        const pdf = item.paper || "/papers/Haptic_Glove_Paper.pdf";
         const paperLink = document.createElement("a");
-        paperLink.href = item.paper || "/papers/N2D_Haptic_Glove.pdf";
+        paperLink.href =
+          `/paper.html?src=${encodeURIComponent(pdf)}&back=home` +
+          `&title=${encodeURIComponent("Kaitlin Calimbahin – Publication (Submitted IEEE ICRA 2026)")}`;
         paperLink.target = "_blank";
         paperLink.rel = "noopener";
-        paperLink.textContent = "Research Paper (PDF) ↗";
+        paperLink.textContent = "View Publication (Submitted IEEE, ICRA 2026) ↗";
 
         paperLink.addEventListener('click', (e)=>{
           e.stopPropagation();
           const card = e.currentTarget.closest('.preview-card');
           const v = card?.querySelector('video.clip');
-          if (v){
-            try{ v.pause(); v.currentTime = 0; }catch(e){}
-            card.classList.remove('show-clip');
-          }
+          if (v){ try{ v.pause(); v.currentTime = 0; }catch(_){} card.classList.remove('show-clip'); }
         });
 
         footer.appendChild(paperLink);
         a.appendChild(footer);
       }
 
-      return a;   /* ✅ CLOSE FUNCTION PROPERLY */
+      return a;
     }
 
     /* =============== Card builder (experience photos only) =============== */
