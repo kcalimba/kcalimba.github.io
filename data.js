@@ -8,7 +8,7 @@ const siteData = {
     heroTitle: "Hi, I'm <span class='hero-name'>Kaitlin!</span> I build delightful hardware & robotic systems.",
     heroSubtitle: "",
     about:
-      "I'm an Electrical Engineering undergraduate student at the University of California, San Diego with a focus on machine learning and controls. I build interactive systems that turn ideas into experiences!\n ✨ I'm currently interning as a Show Control Hardware Intern at Walt Disney Imagineering ✨",
+      "I'm an Electrical Engineering undergraduate student at the University of California, San Diego with a focus on machine learning and controls. I build interactive systems that turn ideas into experiences!\n ✨ I'm currently a Robotics intern at Toyota Research Institute ✨",
     emailHref: "mailto:kcalimbahin@ucsd.edu",
     linkedinHref: "https://www.linkedin.com/in/kaitlin-calimbahin",
   
