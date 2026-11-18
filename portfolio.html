@@ -131,25 +131,25 @@
     const PORTFOLIO_PROJECTS = [
       { id:"pinball", title:"Star Wars: Pinball Machine",
         desc:"This fully functional pinball machine was designed and built with a Star Wars theme, featuring a laser-cut plywood and acrylic playfield with 3D-printed components such as flippers, bumpers, and themed features. An Arduino Mega controlled custom circuitry that powered lights, sounds, and mechanics, including a “hyperspace lever” automated launch system. Interactive elements like an AT-AT bumper, a spinning R2-D2, and a glowing Death Star created an immersive gameplay experience that blended engineering with storytelling.",
-        poster:"/media/projects/pinball.png",
+        poster:"/media/projects/pinball.webp",
         video:"/media/projects/pinball.mp4",
         demo:"demo.html?id=pinball"
       },
       { id:"kitty-robot", title:"Face Recognition Study Buddy Robot",
         desc:"The Study Buddy Kitty was designed to help students stay focused by reacting to their behavior in playful, expressive ways. Using an ESP32 Camera module, supervised learning, and computer vision, the robot detects when a student was present or distracted by their phone, responding with emotions shown on its OLED screen and expressed by a servo-driven tail. A motion sensor allowed it to “feel” petting, turning the robot into a supportive study companion that encouraged productivity through interaction.",
-        poster:"/media/projects/kitty-robot.png",
+        poster:"/media/projects/kitty-robot.webp",
         video:"/media/projects/kitty-robot.mp4",
         demo:"demo.html?id=kitty-robot"
       },
       { id:"spider-mask", title:"Dynamic Spider-Man Mask",
         desc:"This project recreated Spider-Man’s expressive eyes through a 3D-printed mask with mechanical lenses that widened and squinted. Infrared sensors inside the mask detected user input and, via an Arduino Nano, smoothly adjusted the lenses in real time—capturing the character’s dynamic personality without external switches.",
-        poster:"/media/projects/spider-mask.png",
+        poster:"/media/projects/spider-mask.webp",
         video:"/media/projects/spider-mask.mp4",
         demo:"demo.html?id=spider-mask"
       },
       { id:"ironman", title:"Motorized Iron Man Helmet",
         desc:"A 3D-printed Iron Man helmet with a motorized faceplate and LED eyes, built as an analog system (servos, relays, switches—no MCU). Through careful circuit design, the eyes run safely at maximum brightness while the faceplate moves smoothly and reliably.",
-        poster:"/media/projects/ironman.png",
+        poster:"/media/projects/ironman.webp",
         video:"/media/projects/ironman1.mp4",
         demo:"demo.html?id=ironman"
       }
@@ -160,19 +160,19 @@
         title:"Toyota Research Institute – Robotics Intern",
         subtitle:"Project: Small-Scale Robot Replica for UX Research",
         details:"I designed and built a small-scale replica of a larger robot to serve as a UX research tool for factory research studies. I 3D modeled its mechanical systems, including a pitch/yaw servo head, linear-actuated arms, a remote-controlled mobile base, and custom housing matching the full-scale robot. I also designed a custom PCB from schematic to layout, sourced and soldered the components, validated the board, and programmed a state-based control system where each state triggers its own combination of lights, sound, and motion.",
-        poster:"/media/experience/TODO-toyota.png"   // TODO: replace with your photo path
+        poster:"/media/experience/TODO-toyota.webp"   // TODO: replace with your photo path
       },
       { id:"wdi-intern",
         title:"Walt Disney Imagineering – Show Control Hardware Intern",
         subtitle:"Project: Animatronic Test Benches & Show Control Systems",
         details:"I collaborated with multidisciplinary teams to build animatronic test benches, wiring Beckhoff PLC hardware, E-stop circuitry, motor drives, and I/O to replicate an attraction's control system and validate motion profiles for park installation. During factory testing, I resolved motion issues in animated props by comparing their animation profiles against actual motor data, identifying restrictive velocity limits, and retuning the motors for smooth, show-ready motion. I also developed cable, interconnect, and main show rack drawings in AutoCAD for upcoming show control systems.",
-        poster:"/media/experience/TODO-disney.png"   // TODO: replace with your photo path
+        poster:"/media/experience/TODO-disney.webp"   // TODO: replace with your photo path
       },
       { id:"robotics-lead",
         title:"Advanced Robotics and Control Lab – Research Engineer Intern",
         subtitle:"Project: The N2D Haptic Glove",
         details:"The N2D Haptic Glove is a multi-finger glove capable of rendering 2D directional forces, allowing users to feel axial and transverse probing during teleoperation and virtual reality. Compact linkages, gimbal motors with encoders, and a Teensy 4.1 enable high-frequency control and realistic, precise feedback for contact-rich interaction.",
-        poster:"/media/projects/haptic-glove2.png",
+        poster:"/media/projects/haptic-glove2.webp",
         video:"/media/projects/haptic-glove1.mp4",
         /* NEW: paper + demo id */
         paper:"/papers/Haptic_Glove_Paper.pdf",
@@ -182,7 +182,7 @@
         title:"Northrop Grumman – Systems Engineer Intern",
         subtitle:"Project: Automated Hardware Validation Script",
         details:"I developed an automated checkout script for the BACN program that replaced manual hardware validation steps. Working with a multidisciplinary team, I streamlined testing, improved reliability, and laid the groundwork for faster field deployment.",
-        poster:"/media/experience/ng4.png"
+        poster:"/media/experience/ng4.webp"
       }
     ];
 
@@ -265,7 +265,7 @@
       const media=document.createElement("div"); media.className="project-media";
       media.innerHTML = `
         <div class="thumb">
-          <img class="poster" src="${item.poster}" alt="${item.title}">
+          <img class="poster" loading="lazy" decoding="async" src="${item.poster}" alt="${item.title}">
           ${item.video ? `<video class="clip" muted playsinline loop preload="metadata"><source src="${item.video}" type="video/mp4"></video>` : ``}
         </div>`;
 
@@ -319,7 +319,7 @@
       const media=document.createElement("div"); media.className="project-media";
       media.innerHTML = `
         <div class="thumb">
-          <img class="poster" src="${item.poster}" alt="${item.title}">
+          <img class="poster" loading="lazy" decoding="async" src="${item.poster}" alt="${item.title}">
           ${item.video ? `<video class="clip" muted playsinline loop preload="metadata"><source src="${item.video}" type="video/mp4"></video>` : ``}
         </div>`;
 

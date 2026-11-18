@@ -185,10 +185,10 @@
         media.innerHTML = `
           <div class="thumb-pair">
             <div class="thumb" data-kind="poster" aria-label="${item.title} poster">
-              <img class="poster" src="${leftSrc}" alt="${item.title}">
+              <img class="poster" loading="lazy" decoding="async" src="${leftSrc}" alt="${item.title}">
             </div>
             <div class="thumb" data-kind="video" aria-label="${item.title} video">
-              <img class="video-overlay" src="${rightImg}" alt="" aria-hidden="true">
+              <img class="video-overlay" loading="lazy" decoding="async" src="${rightImg}" alt="" aria-hidden="true">
               <video class="clip" muted playsinline loop preload="metadata">
                 <source src="${item.video}" type="video/mp4">
               </video>
@@ -197,7 +197,7 @@
       } else {
         /* Single-frame card */
         const img=item.img||placeholder;
-        media.innerHTML=`<div class="thumb" data-kind="poster"><img class="poster" src="${img}" alt="${item.title}"></div>`;
+        media.innerHTML=`<div class="thumb" data-kind="poster"><img class="poster" loading="lazy" decoding="async" src="${img}" alt="${item.title}"></div>`;
       }
 
       row.appendChild(text); row.appendChild(media);

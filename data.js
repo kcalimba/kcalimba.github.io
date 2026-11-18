@@ -27,14 +27,14 @@ const siteData = {
         desc: "A custom, fully functional Star Wars–themed pinball machine with a laser-cut playfield and 3D-printed mechanisms. An Arduino Mega drives lights, sounds, and features like a hyperspace auto-launcher, AT-AT pop bumpers, a motorized spinning R2-D2, and glowing Death Star.",
         img:  "img/pinball.png",
         video: "media/projects/pinball.mp4",
-        poster:"media/projects/pinball.png"
+        poster:"media/projects/pinball.webp"
       },
       {
         id: "haptic-glove",
         title: "The N2D Haptic Glove",
         homeDesc: "Collaborated with a multidisciplinary team to develop a haptic glove for contact-rich robotic teleoperation and virtual reality to enhance the immersiveness of teleoperation and virtual experiences.",
         desc: "The N2D Haptic Glove is a multi-finger glove capable of rendering 2D directional forces, allowing users to feel axial and transverse probing during teleoperation and virtual reality. Compact linkages, gimbal motors with encoders, and a Teensy 4.1 enable high-frequency control and realistic, precise feedback for contact-rich interaction.",
-        img: "media/projects/haptic-glove1.png",
+        img: "media/projects/haptic-glove1.webp",
         paper: "/papers/Haptic_Glove_Paper.pdf",   // <-- update path if different
         demo:  "/demo/haptic-glove.mp4"          // <-- optional: direct demo file
       },
@@ -45,7 +45,7 @@ const siteData = {
         desc: "A cat study-buddy robot that uses an ESP32 Camera module to implement a supervised machine learning algorithm and computer vision to detect people versus phones while reacting in real time. Expressive OLED eyes and a servo-driven tail reflect emotions, with motion sensors for “petting” interactions.",
         img: "img/kitty.jpg",
         video: "media/projects/kitty-robot.mp4",
-        poster:"media/projects/kitty-robot.png"
+        poster:"media/projects/kitty-robot.webp"
       },
       {
         id: "ironman",
@@ -54,7 +54,7 @@ const siteData = {
         desc: "A wearable 3D-printed Iron Man helmet with a motorized faceplate and LED eyes, driven entirely by an analog circuit featuring a relay, switches, and servos. Power and control were tuned for smooth faceplate motion and maximum safe LED brightness.",
         img: "img/spider.jpg",
         video:"media/projects/ironman.mp4",
-        poster:"media/projects/ironman.png"
+        poster:"media/projects/ironman.webp"
       },
       {
         id: "spider-mask",
@@ -63,7 +63,7 @@ const siteData = {
         desc: "A wearable 3D-printed Spider-Man mask with mechanical eyes that widen and squint to express motion based on user input. An Arduino Nano and dual infrared sensors coordinate smooth servo actuation and detect user input for real-time exppressions.",
         img: "img/glove.jpg",
         video:"media/projects/spider-mask.mp4",
-        poster:"media/projects/spider-mask.png"
+        poster:"media/projects/spider-mask.webp"
       }
     ],    
   
@@ -72,13 +72,13 @@ const siteData = {
         id: "tri-intern",
         title: "Toyota Research Institute – Robotics Intern",
         details: "Designed and built a small-scale replica of a larger robot as a UX research tool for factory studies, from its mechanical systems in Onshape and a custom KiCad PCB to a state-based control system driving its lights, sound, and motion.",
-        img: "/media/experience/TODO-toyota.png"   // TODO: replace with your photo path
+        img: "/media/experience/TODO-toyota.webp"   // TODO: replace with your photo path
       },
       {
         id: "wdi-intern",
         title: "Walt Disney Imagineering – Show Control Hardware Intern",
         details: "Collaborated with multidisciplinary teams to build animatronic test benches with Beckhoff PLC hardware, E-stop circuitry, and motor drives, tuning animated props for smooth, show-ready motion and drafting show control drawings in AutoCAD.",
-        img: "/media/experience/TODO-disney.png"   // TODO: replace with your photo path
+        img: "/media/experience/TODO-disney.webp"   // TODO: replace with your photo path
       },
       {
         id: "robotics-lead",
@@ -99,11 +99,11 @@ const siteData = {
         title: "Themed Entertainment Association (TEA) – Technical Director",
         details: "Collaborated closely with the creative team to design and build technical elements for student showcases while translating creative concepts into functional prototypes.",
         // Fallback image (used if posterLeft is missing)
-        img: "/media/extracurriculars/tea1.png",
+        img: "/media/extracurriculars/tea1.webp",
     
         // Two-frame media for this card (both live in data.js now)
-        posterLeft:  "/media/extracurriculars/tea3.png", // left still image
-        videoPoster: "/media/extracurriculars/tea5.png", // right underlay image
+        posterLeft:  "/media/extracurriculars/tea3.webp", // left still image
+        videoPoster: "/media/extracurriculars/tea5.webp", // right underlay image
         video:       "/media/extracurriculars/tea4.mp4", // right video
     
         // Independent tuning + percent shrink (like portfolio)
@@ -123,7 +123,7 @@ const siteData = {
         id: "ieee",
         title: "Institute of Electrical and Electronics Engineers (IEEE) – Technical Lead",
         details: "Led workshops on electronics and programming, to help students build technical skills through hands-on projects, in addition to coordinating outreach events with local community college students to better prepare them on a path towards engineering.",
-        img: "/media/extracurriculars/outreach1.png",
+        img: "/media/extracurriculars/outreach1.webp",
         tune: {
           percent: 110,
           poster: { ratio: "16 / 9", x: "55%", y: "45%", zoom: 1.60 }
@@ -133,7 +133,7 @@ const siteData = {
         id: "empower",
         title: "EMPOWER Scholar",
         details: "Selected as a low‑income transfer student for the NSF‑backed EMPOWER Scholars program at UC San Diego’s Jacobs School of Engineering, I received need‑based scholarship support, faculty and alumni mentoring, and summer research opportunities to advance my engineering career. On campus, I’ve worked to pay it forward by organizing peer study sessions, mentoring incoming transfer students, and helping run engineering events that bridge academic learning with hands-on experiences.",
-        img: "/media/extracurriculars/empower.png",
+        img: "/media/extracurriculars/empower.webp",
         tune: {
           percent: 85,
           poster: { ratio: "16 / 15", x: "50%", y: "50%", zoom: 1.00 }

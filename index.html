@@ -168,10 +168,10 @@
 
     /* ================= Media sources (projects) ================= */
     const MEDIA = {
-      "haptic-glove": { poster: "/media/projects/haptic-glove1.png", video: "/media/projects/haptic-glove.mp4" },
-      "kitty-robot":  { poster: "/media/projects/kitty-robot.png",  video: "/media/projects/kitty-robot.mp4" },
-      "ironman":      { poster: "/media/projects/ironman.png",      video: "/media/projects/ironman.mp4" },
-      "pinball":      { poster: "/media/projects/pinball.png",      video: "/media/projects/pinball.mp4" }
+      "haptic-glove": { poster: "/media/projects/haptic-glove1.webp", video: "/media/projects/haptic-glove.mp4" },
+      "kitty-robot":  { poster: "/media/projects/kitty-robot.webp",  video: "/media/projects/kitty-robot.mp4" },
+      "ironman":      { poster: "/media/projects/ironman.webp",      video: "/media/projects/ironman.mp4" },
+      "pinball":      { poster: "/media/projects/pinball.webp",      video: "/media/projects/pinball.mp4" }
     };
 
     /* ========= Per-card tuning (projects) ========= */
@@ -197,10 +197,10 @@
 
     /* ================= Media sources (experience photos) ================= */
     const EXP_MEDIA = {
-      "tri-intern":    { poster: "/media/experience/TODO-toyota.png" },  // TODO: replace with your photo path
-      "wdi-intern":    { poster: "/media/experience/TODO-disney.png" },  // TODO: replace with your photo path
-      "robotics-lead": { poster: "/media/projects/haptic-glove3.png" },
-      "ng-intern":     { poster: "/media/experience/ng3.png" }
+      "tri-intern":    { poster: "/media/experience/TODO-toyota.webp" },  // TODO: replace with your photo path
+      "wdi-intern":    { poster: "/media/experience/TODO-disney.webp" },  // TODO: replace with your photo path
+      "robotics-lead": { poster: "/media/projects/haptic-glove3.webp" },
+      "ng-intern":     { poster: "/media/experience/ng3.webp" }
     };
 
     /* ========= Per-card tuning (experience photos) ========= */
@@ -213,8 +213,8 @@
 
     /* ================= Media sources (extracurricular photos) ================= */
     const EXTRA_MEDIA = {
-      "ieee": { poster: "/media/extracurriculars/ieee.png" },
-      "tea":  { poster: "/media/extracurriculars/tea.png"  }
+      "ieee": { poster: "/media/extracurriculars/ieee.webp" },
+      "tea":  { poster: "/media/extracurriculars/tea.webp"  }
     };
 
     /* ========= Per-card tuning (extracurricular photos) ========= */
@@ -247,13 +247,13 @@
       if (cfg) {
         mediaHTML = `
           <div class="thumb">
-            <img class="poster" src="${cfg.poster}" alt="${item.title}">
+            <img class="poster" loading="lazy" decoding="async" src="${cfg.poster}" alt="${item.title}">
             <video class="clip" muted playsinline loop preload="metadata">
               <source src="${cfg.video}" type="video/mp4">
             </video>
           </div>`;
       } else {
-        mediaHTML = `<div class="thumb"><img class="poster" src="${item.img}" alt="${item.title}"></div>`;
+        mediaHTML = `<div class="thumb"><img class="poster" loading="lazy" decoding="async" src="${item.img}" alt="${item.title}"></div>`;
       }
 
       a.innerHTML = `
@@ -341,7 +341,7 @@
       const cfg = EXP_MEDIA[item.id];
       const mediaHTML = `
         <div class="thumb">
-          <img class="poster" src="${cfg ? cfg.poster : item.img}" alt="${item.title}">
+          <img class="poster" loading="lazy" decoding="async" src="${cfg ? cfg.poster : item.img}" alt="${item.title}">
         </div>`;
 
       a.innerHTML = `
@@ -365,7 +365,7 @@
       const cfg = EXTRA_MEDIA[item.id];
       const mediaHTML = `
         <div class="thumb">
-          <img class="poster" src="${cfg ? cfg.poster : item.img}" alt="${item.title}">
+          <img class="poster" loading="lazy" decoding="async" src="${cfg ? cfg.poster : item.img}" alt="${item.title}">
         </div>`;
 
       a.innerHTML = `
