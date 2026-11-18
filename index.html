@@ -97,7 +97,7 @@
 
     <section id="experience">
       <h2>Experience</h2>
-      <div id="experience-highlights" class="preview-grid"></div>
+      <div id="experience-highlights" class="preview-stack"></div>
       <p style="margin-top:10px"><a class="btn" href="portfolio.html#experience">View all experience</a></p>
     </section>
 
@@ -170,7 +170,8 @@
     const MEDIA = {
       "haptic-glove": { poster: "/media/projects/haptic-glove1.png", video: "/media/projects/haptic-glove.mp4" },
       "kitty-robot":  { poster: "/media/projects/kitty-robot.png",  video: "/media/projects/kitty-robot.mp4" },
-      "ironman":      { poster: "/media/projects/ironman.png",      video: "/media/projects/ironman.mp4" }
+      "ironman":      { poster: "/media/projects/ironman.png",      video: "/media/projects/ironman.mp4" },
+      "pinball":      { poster: "/media/projects/pinball.png",      video: "/media/projects/pinball.mp4" }
     };
 
     /* ========= Per-card tuning (projects) ========= */
@@ -187,17 +188,25 @@
       "ironman":      { ratio:"15 / 16",
         poster:{ x:"50%", y:"30%", zoom:1.00 },
         video: { x:"50%", y:"60%", zoom:1.15 }
+      },
+      "pinball":      { ratio:"15 / 16",
+        poster:{ x:"50%", y:"20%", zoom:1.00 },
+        video: { x:"50%", y:"20%", zoom:1.00 }
       }
     };
 
     /* ================= Media sources (experience photos) ================= */
     const EXP_MEDIA = {
+      "tri-intern":    { poster: "/media/experience/TODO-toyota.png" },  // TODO: replace with your photo path
+      "wdi-intern":    { poster: "/media/experience/TODO-disney.png" },  // TODO: replace with your photo path
       "robotics-lead": { poster: "/media/projects/haptic-glove3.png" },
       "ng-intern":     { poster: "/media/experience/ng3.png" }
     };
 
     /* ========= Per-card tuning (experience photos) ========= */
     const EXP_TUNING = {
+      "tri-intern":    { ratio:"16 / 10", poster:{ x:"50%", y:"50%", zoom:1.00 } },
+      "wdi-intern":    { ratio:"16 / 10", poster:{ x:"50%", y:"50%", zoom:1.00 } },
       "robotics-lead": { ratio:"16 / 10", poster:{ x:"50%", y:"50%", zoom:1.00 } },
       "ng-intern":     { ratio:"16 / 10", poster:{ x:"50%", y:"50%",  zoom:1.00 } }
     };
@@ -210,8 +219,8 @@
 
     /* ========= Per-card tuning (extracurricular photos) ========= */
     const EXTRA_TUNING = {
-      "ieee": { ratio:"16 / 9", poster:{ x:"5%", y:"50%", zoom:1.05 } },
-      "tea":  { ratio:"16 / 9", poster:{ x:"55%", y:"100%", zoom:1.50 } }
+      "ieee": { ratio:"16 / 7", poster:{ x:"5%", y:"50%", zoom:1.05 } },
+      "tea":  { ratio:"16 / 7", poster:{ x:"55%", y:"100%", zoom:1.50 } }
     };
 
     function applyTuning(thumb, tuning){
@@ -337,8 +346,10 @@
 
       a.innerHTML = `
         ${mediaHTML}
-        <h3>${item.title}</h3>
-        <p class="muted">${item.details || ""}</p>
+        <div class="preview-text">
+          <h3>${item.title}</h3>
+          <p class="muted">${item.details || ""}</p>
+        </div>
       `;
 
       applyTuning(a.querySelector('.thumb'), EXP_TUNING[item.id]);

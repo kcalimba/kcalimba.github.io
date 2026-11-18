@@ -8,13 +8,13 @@ const siteData = {
     heroTitle: "Hi, I'm <span class='hero-name'>Kaitlin!</span> I build delightful hardware & robotic systems.",
     heroSubtitle: "",
     about:
-      "I'm an Electrical Engineering undergraduate student at the University of California, San Diego with a focus on machine learning and controls. I build interactive systems that turn ideas into experiences!\n ✨ I'm currently a Robotics intern at Toyota Research Institute ✨",
+      "I'm an Electrical Engineering undergraduate student at the University of California, San Diego with a focus on machine learning and controls. I build interactive systems that turn ideas into experiences!\n ✨ I'm currently interning as a Robotics Intern for Toyota Research Institute ✨",
     emailHref: "mailto:kcalimbahin@ucsd.edu",
     linkedinHref: "https://www.linkedin.com/in/kaitlin-calimbahin",
   
     highlights: {
-      projects: ["haptic-glove", "kitty-robot", "ironman"],
-      experience: ["robotics-lead", "ng-intern"],
+      projects: ["haptic-glove", "kitty-robot", "ironman", "pinball"],
+      experience: ["tri-intern", "wdi-intern", "robotics-lead", "ng-intern"],
       extracurriculars: ["ieee", "tea"]
     },
   
@@ -23,7 +23,7 @@ const siteData = {
       {
         id: "pinball",
         title: "Star Wars: Pinball Machine",
-        homeDesc: "",
+        homeDesc: "Built a fully functional Star Wars–themed pinball machine whose state machine–based control system coordinates scoring, lights, sounds, and themed mechanisms like AT-AT pop bumpers and a spinning R2-D2.",
         desc: "A custom, fully functional Star Wars–themed pinball machine with a laser-cut playfield and 3D-printed mechanisms. An Arduino Mega drives lights, sounds, and features like a hyperspace auto-launcher, AT-AT pop bumpers, a motorized spinning R2-D2, and glowing Death Star.",
         img:  "img/pinball.png",
         video: "media/projects/pinball.mp4",
@@ -68,6 +68,18 @@ const siteData = {
     ],    
   
     experience: [
+      {
+        id: "tri-intern",
+        title: "Toyota Research Institute – Robotics Intern",
+        details: "Designed and built a small-scale replica of a larger robot as a UX research tool for factory studies, from its mechanical systems in Onshape and a custom KiCad PCB to a state-based control system driving its lights, sound, and motion.",
+        img: "/media/experience/TODO-toyota.png"   // TODO: replace with your photo path
+      },
+      {
+        id: "wdi-intern",
+        title: "Walt Disney Imagineering – Show Control Hardware Intern",
+        details: "Collaborated with multidisciplinary teams to build animatronic test benches with Beckhoff PLC hardware, E-stop circuitry, and motor drives, tuning animated props for smooth, show-ready motion and drafting show control drawings in AutoCAD.",
+        img: "/media/experience/TODO-disney.png"   // TODO: replace with your photo path
+      },
       {
         id: "robotics-lead",
         title: "Advanced Robotics and Control Lab – Research Engineer Intern",
